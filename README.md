@@ -1,6 +1,6 @@
-#SoundCloud Sentiment Research
-##Jasdev Singh - Senior Thesis Repository, 2013
-##Advisor: Dr. Yanjun Qi
+##SoundCloud Sentiment Research
+###Jasdev Singh - Senior Thesis Repository, 2013
+###Advisor: Dr. Yanjun Qi
 ---
 This repo is a work in progress and will serve as central place for code and datasets related to my research in the 2013 school year.
 Four main areas I will be focusing on are:
