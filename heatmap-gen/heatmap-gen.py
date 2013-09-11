@@ -32,6 +32,5 @@ def getComments():
     url = request.args.get('url')
     return str(getCommentsFromURL(target=url))
 
-
 if __name__ == '__main__':
     app.run()
