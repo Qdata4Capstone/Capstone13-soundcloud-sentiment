@@ -25,7 +25,7 @@ def getCommentsFromURL(target):
 
 @app.route('/')
 def index():
-    return 'lol index page'
+    return 'TBD, landing page'
 
 @app.route('/comments')
 def getComments():
