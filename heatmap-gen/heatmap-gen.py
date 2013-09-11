@@ -1,12 +1,12 @@
 from flask import Flask
 from flask import request
-from pprint import pprint
+
 import soundcloud
 
-client = soundcloud.Client(client_id="6504a6ad70b88dd5684e256947c782c0")
-
 app = Flask(__name__)
+app.config.from_envvar('SC_SENTIMENT_SETTINGS')
 
+client = soundcloud.Client(client_id=app.config['SOUNDCLOUD_ID'])
 
 def getCommentsFromURL(target):
     track = client.get('/resolve', url=target)
