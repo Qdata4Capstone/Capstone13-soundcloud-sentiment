@@ -1,6 +1,5 @@
 import heatmap_gen
 import json
-from pprint import pprint
 
 def check_dups(file_contents):
     tracks = set()
@@ -38,10 +37,16 @@ def parseFields(comment):
     return out
 
 if __name__ == '__main__':
-    target = open('URLs.txt', 'r')
-    lines = target.read().splitlines()
-    target.close()
-
-    if not check_dups(lines):
-        print 'All good'
-        scrape_comments(lines)
+    # target = open('URLs.txt', 'r')
+    # lines = target.read().splitlines()
+    # target.close()
+    #
+    #  if not check_dups(lines):
+    #      print 'All good'
+    #      scrape_comments(lines)
+    print 'Loading file'
+    json_data = open('comments.json')
+    data = json.load(json_data)
+    print 'File loaded'
+    print len(data)
+    json_data.close()
