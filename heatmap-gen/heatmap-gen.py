@@ -14,14 +14,14 @@ def getCommentsFromURL(target):
 
     page_size = 200
     comments = []
-    current = client.get('/tracks/' + str(id) + '/comments', limit=page_size)
+    current = client.get('/tracks/' + str(id) + '/comments', limit=page_size, offset=0)
     comments += current
     page = 1
     while not len(current) == 0:
         current = client.get('/tracks/' + str(id) + '/comments', limit=page_size, offset=page*page_size)
         comments += current
         page += 1
-    return len(comments)
+    return comments
 
 @app.route('/')
 def index():
