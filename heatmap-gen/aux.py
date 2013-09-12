@@ -15,7 +15,6 @@ def check_dups(file_contents):
 
 def scrape_comments(file_contents):
     comments = heatmap_gen.getCommentsFromURL(file_contents[0])
-
     for comment in comments:
         if hasattr(comment.obj, 'id'):
             print comment.obj.id
