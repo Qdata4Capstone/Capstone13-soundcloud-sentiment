@@ -8,11 +8,10 @@ app.config.from_envvar('SC_SENTIMENT_SETTINGS')
 
 client = soundcloud.Client(client_id=app.config['SOUNDCLOUD_ID'])
 
+
 def getCommentsFromURL(target):
-    print 'Resolving url'
     track = client.get('/resolve', url=target)
     id = track.id
-    print 'url resolved'
 
     page_size = 200
     comments = []
@@ -20,7 +19,6 @@ def getCommentsFromURL(target):
     comments += current
     page = 1
     while not len(current) == 0:
-        print 'paginating'
         current = client.get('/tracks/' + str(id) + '/comments', limit=page_size, offset=page*page_size)
         comments += current
         page += 1
