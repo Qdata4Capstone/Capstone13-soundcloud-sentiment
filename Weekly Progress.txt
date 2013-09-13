@@ -1,0 +1,6 @@
+Weekly Updates:
+
+Sep. 12th:
+- Set up repo (https://github.com/Jasdev/soundcloud-sentiment) for thesis code data / sets
+- Tracking subgoals here (https://trello.com/b/Ii6IK0Mi)
+- Was able to scrape 200k comments for the initial classifier training (see comments.json, https://github.com/Jasdev/soundcloud-sentiment/blob/master/heatmap-gen/comments.json)
