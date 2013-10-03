@@ -113,17 +113,18 @@ negtagged = zip(negative, neglist)
 taggedtweets = negtagged + neuttagged + sptagged + rptagged
 
 tweets = []
-wordlist = getwordfeatures(getwords(tweets))
 
 for (word, sentiment) in taggedtweets:
     word_filter = [i.lower() for i in word.split()]
     tweets.append((word_filter, sentiment))
 
-training_set = nltk.classify.apply_features(feature_extractor, tweets)
+wordlist = wordlist = [i for i in getwords(tweets) if not i in stopwords.words('english')]
 
+training_set = nltk.classify.apply_features(feature_extractor, tweets)
 classifier = nltk.NaiveBayesClassifier.train(training_set)
+
 print getwordfeatures(getwords(tweets))
-print classifier.show_most_informative_features(n=30)
+print classifier.show_most_informative_features(n=50)
 
 if __name__ == '__main__':
     #target = open('URLs.txt', 'r')
