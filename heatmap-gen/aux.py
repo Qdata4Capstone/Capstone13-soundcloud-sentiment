@@ -126,6 +126,8 @@ classifier = nltk.NaiveBayesClassifier.train(training_set)
 print getwordfeatures(getwords(tweets))
 print classifier.show_most_informative_features(n=50)
 
+print "Attempt to classify: " + classifier.classify(feature_extractor("good tune".split()))
+
 if __name__ == '__main__':
     #target = open('URLs.txt', 'r')
     #lines = target.read().splitlines()
