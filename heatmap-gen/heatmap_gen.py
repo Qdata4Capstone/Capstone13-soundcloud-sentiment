@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import request
-import os, sys, nltk, soundcloud
+import os, sys, nltk, soundcloud, json
 from nltk.corpus import stopwords
 
 app = Flask(__name__)
@@ -42,7 +42,7 @@ neutral = n.readlines()
 neg = open('./comments/negative.txt', 'r')
 negative = neg.readlines()
 
-neglist, rplist, splist, neutlist = []
+neglist, rplist, splist, neutlist = [], [], [], []
 
 for i in range(0,len(really_positive)):
     rplist.append('really_positive')
@@ -85,17 +85,34 @@ print classifier.show_most_informative_features(n=50)
 def get_comments_from_url(target):
     track = client.get('/resolve', url=target)
     id = track.id
+    waveform = track.waveform_url
 
     page_size = 200
     comments = []
     current = client.get('/tracks/' + str(id) + '/comments', limit=page_size, offset=0)
-    comments += current
+
+    for comment in current:
+        value = {}
+        value['body'] = comment.body
+        value['timestamp'] = comment.timestamp
+        value['created_at'] = comment.created_at
+        comments.append(value)
+
     page = 1
     while not len(current) == 0:
         current = client.get('/tracks/' + str(id) + '/comments', limit=page_size, offset=page*page_size)
-        comments += current
+
+        for comment in current:
+            value = {}
+            value['body'] = comment.body
+            value['timestamp'] = comment.timestamp
+            value['created_at'] = comment.created_at
+            comments.append(value)
+
         page += 1
-    return comments
+
+    result = {'id': id, 'waveform_url': waveform, 'comments': comments}
+    return result
 
 @app.route('/')
 def index():
@@ -105,18 +122,16 @@ def index():
 def waveform():
     url = request.args.get('url')
     '''
-
     Below is snippet to classify a given piece of text
         print "Attempt to classify: " + classifier.classify(feature_extractor("good tune".split()))
     Need to fetch all comments form URL
     Classify each one, and pass to template for rendering with waveform.js
-
     '''
 
 @app.route('/comments')
 def get_comments():
     url = request.args.get('url')
-    return str(get_comments_from_url(target=url))
+    return json.dumps(get_comments_from_url(target=url))
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
