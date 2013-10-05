@@ -1,16 +1,13 @@
 from flask import Flask
 from flask import request
-import soundcloud
-import os, sys, nltk
+import os, sys, nltk, soundcloud
 from nltk.corpus import stopwords
 
 app = Flask(__name__)
 app.config.from_envvar('SC_SENTIMENT_SETTINGS')
 
 client = soundcloud.Client(client_id=app.config['SOUNDCLOUD_ID'])
-
-def train_classifier():
-    pass
+os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 
 #Pull out all of the words in a list of tagged tweets, formatted in tuples.
 def getwords(tweets):
@@ -33,8 +30,6 @@ def feature_extractor(doc):
         features['contains(%s)' % i] = (i in docwords)
     return features
 
-os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
-
 rp = open('./comments/really_positive.txt', 'r')
 really_positive = rp.readlines()
 
@@ -47,10 +42,7 @@ neutral = n.readlines()
 neg = open('./comments/negative.txt', 'r')
 negative = neg.readlines()
 
-neglist = []
-rplist = []
-splist = []
-neutlist = []
+neglist, rplist, splist, neutlist = []
 
 for i in range(0,len(really_positive)):
     rplist.append('really_positive')
@@ -77,15 +69,18 @@ for (word, sentiment) in taggedtweets:
     word_filter = [i.lower() for i in word.split()]
     tweets.append((word_filter, sentiment))
 
+customstopwords = ['download', 'link', 'music', 'synth', 'i\'m', 'u', 'balls', 'dl',
+                   'people', 'chords', 'you\'re', 'new', 'im', 'guys', 'i\'ve', 'vocals',
+                   'would', 'one', 'like', 'tell', 'joel!', 'martin', 'r', 'hardwell', '?',
+                   'that\'s', 'check', '...']
+
 wordlist = wordlist = [i for i in getwords(tweets) if not i in stopwords.words('english')]
+wordlist = [i for i in wordlist if not i in customstopwords]
 
 training_set = nltk.classify.apply_features(feature_extractor, tweets)
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 
-print getwordfeatures(getwords(tweets))
 print classifier.show_most_informative_features(n=50)
-
-print "Attempt to classify: " + classifier.classify(feature_extractor("good tune".split()))
 
 def get_comments_from_url(target):
     track = client.get('/resolve', url=target)
@@ -106,11 +101,22 @@ def get_comments_from_url(target):
 def index():
     return 'TBD, landing page'
 
+@app.route('/waveform')
+def waveform():
+    url = request.args.get('url')
+    '''
+
+    Below is snippet to classify a given piece of text
+        print "Attempt to classify: " + classifier.classify(feature_extractor("good tune".split()))
+    Need to fetch all comments form URL
+    Classify each one, and pass to template for rendering with waveform.js
+
+    '''
+
 @app.route('/comments')
 def get_comments():
     url = request.args.get('url')
     return str(get_comments_from_url(target=url))
 
 if __name__ == '__main__':
-    #Train classifier for incoming requests
     app.run()
