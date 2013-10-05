@@ -8,7 +8,7 @@ Four main areas I will be focusing on are:
 * Clustering timed comments for intelligent previews
 * Looking for trends in the BeatPort top charts
 * Distribution of sentiment among remixes
-* Graphing artists' use of other musicians songs in their sets at festivals such as Tomorrowworld / UMF
+* Graphing artists' use of other musician's songs in their sets at festivals such as Tomorrowworld / UMF
 
 All subtasks and goals are open to the public and can be viewed here:
 https://trello.com/b/Ii6IK0Mi
