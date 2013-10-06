@@ -8,8 +8,16 @@
             <canvas></canvas>
         </div>
         <button type="button" id="trigger">Click Me!</button>
+
+        <script src="//connect.soundcloud.com/sdk.js"></script>
         <script src="../static/js/jquery.js"></script>
         <script src="../static/js/waveform.js"></script>
         <script src="../static/js/index.js"></script>
+        <script>
+            SC.initialize({
+                client_id: "6504a6ad70b88dd5684e256947c782c0",
+                redirect_uri: ""
+            });
+        </script>
     </body>
 </html>
