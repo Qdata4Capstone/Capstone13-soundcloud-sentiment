@@ -74,7 +74,10 @@ for (word, sentiment) in taggedtweets:
 customstopwords = ['download', 'link', 'music', 'synth', 'i\'m', 'u', 'balls', 'dl',
                    'people', 'chords', 'you\'re', 'new', 'im', 'guys', 'i\'ve', 'vocals',
                    'would', 'one', 'like', 'tell', 'joel!', 'martin', 'r', 'hardwell', '?',
-                   'that\'s', 'check', '...']
+                   'that\'s', 'check', '...', 'dj', 'thing', 'listening', 'tune', 'remix', 'gonna',
+                   'take', 'first', 'gives', 'animals', '-', 'it\'s', 'gets', 'make', '.', 'it.', 'get',
+                   'deadmau5', 'work', 'ride', 'it!', 'track!', 'this.', 'dude', 'job', 'god', 'cookies',
+                   'milk', 'work.', 'go']
 
 wordlist = wordlist = [i for i in getwords(tweets) if not i in stopwords.words('english')]
 wordlist = [i for i in wordlist if not i in customstopwords]
@@ -82,7 +85,7 @@ wordlist = [i for i in wordlist if not i in customstopwords]
 training_set = nltk.classify.apply_features(feature_extractor, tweets)
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 
-#print classifier.show_most_informative_features(n=50)
+print classifier.show_most_informative_features(n=100)
 
 def get_comments_from_url(target):
     track = client.get('/resolve', url=target)
