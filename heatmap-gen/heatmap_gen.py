@@ -122,10 +122,6 @@ def get_comments_from_url(target):
     result = {'id': id, 'waveform_url': waveform, 'duration': duration,'comments': comments, 'scores': scores}
     return result
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
 def score_comments(comments, time):
     scores = {}
     for comment in comments:
@@ -136,6 +132,9 @@ def score_comments(comments, time):
             pass
     return scores
 
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/comments')
 def get_comments():
