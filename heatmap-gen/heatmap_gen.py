@@ -1,8 +1,7 @@
 from flask import Flask
 from flask import request
 from flask import render_template
-import os, sys, nltk, soundcloud, json
-from pprint import pprint
+import os, sys, nltk, soundcloud, json, Image, ImageDraw, urllib, math
 from nltk.corpus import stopwords
 
 app = Flask(__name__)
@@ -77,7 +76,7 @@ customstopwords = ['download', 'link', 'music', 'synth', 'i\'m', 'u', 'balls', '
                    'that\'s', 'check', '...', 'dj', 'thing', 'listening', 'tune', 'remix', 'gonna',
                    'take', 'first', 'gives', 'animals', '-', 'it\'s', 'gets', 'make', '.', 'it.', 'get',
                    'deadmau5', 'work', 'ride', 'it!', 'track!', 'this.', 'dude', 'job', 'god', 'cookies',
-                   'milk', 'work.', 'go']
+                   'milk', 'work.', 'go', 'dick', 'ass', 'n', 'please']
 
 wordlist = wordlist = [i for i in getwords(tweets) if not i in stopwords.words('english')]
 wordlist = [i for i in wordlist if not i in customstopwords]
@@ -85,7 +84,7 @@ wordlist = [i for i in wordlist if not i in customstopwords]
 training_set = nltk.classify.apply_features(feature_extractor, tweets)
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 
-print classifier.show_most_informative_features(n=100)
+print classifier.show_most_informative_features(n=50)
 
 def get_comments_from_url(target):
     track = client.get('/resolve', url=target)
@@ -122,18 +121,43 @@ def get_comments_from_url(target):
 
     scores = score_comments(comments, duration)
 
-    result = {'id': id, 'waveform_url': waveform, 'duration': duration,'comments': comments, 'scores': scores}
+    drawLines(waveform, scores)
+
+    result = {'id': id, 'waveform_url': waveform, 'duration': duration, 'comments': comments}
     return result
 
 def score_comments(comments, time):
-    scores = {}
+    scores = []
     for comment in comments:
         try:
             percent = float(str(comment['timestamp'])) / time
-            scores['' + "{0:.8f}".format(percent)] = classifier.classify(feature_extractor(comment['body'].split()))
+            score = classifier.classify(feature_extractor(comment['body'].split()))
+            scores.append((percent, score))
         except ValueError:
             pass
     return scores
+
+def drawLines(url, scores):
+    location = "./static/img/" + url.split('/')[-1]
+    urllib.urlretrieve(url, location)
+    im = Image.open(location)
+    im = im.convert("RGBA")
+    im = im.point(lambda x: x * .9)
+    draw = ImageDraw.Draw(im)
+
+    for (percent, score) in scores:
+        width = im.size[0]
+        comment_x = math.floor(width*percent)
+        if score == "negative":
+            draw.line((comment_x,0, comment_x, im.size[1]), fill=(255, 0, 0))
+        elif score == "neutral":
+            draw.line((comment_x,0, comment_x, im.size[1]), fill=(102, 255, 178))
+        elif score == "semi_positive":
+            draw.line((comment_x,0, comment_x, im.size[1]), fill=(51, 255, 51))
+        else:
+            draw.line((comment_x,0, comment_x, im.size[1]), fill=(0, 204, 0))
+
+    im.save("./static/img/processed" + url.split('/')[-1])
 
 @app.route('/')
 def index():
