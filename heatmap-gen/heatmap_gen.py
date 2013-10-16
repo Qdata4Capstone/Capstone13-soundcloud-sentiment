@@ -123,7 +123,7 @@ def get_comments_from_url(target):
 
     drawLines(waveform, scores)
 
-    result = {'id': id, 'waveform_url': waveform, 'duration': duration, 'comments': comments}
+    result = {'id': id, 'waveform_url': waveform, 'duration': duration, 'comments': comments, 'scores': scores}
     return result
 
 def score_comments(comments, time):
@@ -151,13 +151,13 @@ def drawLines(url, scores):
         if score == "negative":
             draw.line((comment_x,0, comment_x, im.size[1]), fill=(255, 0, 0))
         elif score == "neutral":
-            draw.line((comment_x,0, comment_x, im.size[1]), fill=(102, 255, 178))
+            draw.line((comment_x,0, comment_x, im.size[1]), fill=(128, 128, 128))
         elif score == "semi_positive":
-            draw.line((comment_x,0, comment_x, im.size[1]), fill=(51, 255, 51))
+            draw.line((comment_x,0, comment_x, im.size[1]), fill=(0, 153, 153))
         else:
-            draw.line((comment_x,0, comment_x, im.size[1]), fill=(0, 204, 0))
+            draw.line((comment_x,0, comment_x, im.size[1]), fill=(0, 153, 0))
 
-    im.save("./static/img/processed" + url.split('/')[-1])
+    im.save("./static/img/processed_" + url.split('/')[-1])
 
 @app.route('/')
 def index():
