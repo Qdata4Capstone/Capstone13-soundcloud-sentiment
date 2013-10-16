@@ -120,9 +120,8 @@ def get_comments_from_url(target):
         page += 1
 
     scores = score_comments(comments, duration)
-
-    draw_lines(waveform, scores)
-    find_window(scores, int(duration), 30000)
+    interval = find_window(scores, duration, 30000)
+    draw_lines(waveform, scores, interval)
 
     result = {'id': id, 'waveform_url': waveform, 'duration': duration, 'comments': comments, 'scores': scores}
     return result
@@ -139,34 +138,38 @@ def score_comments(comments, time):
             pass
     return scores
 
-def draw_lines(url, scores):
+def draw_lines(url, scores, interval):
     location = "./static/img/" + url.split('/')[-1]
     urllib.urlretrieve(url, location)
     im = Image.open(location)
     im = im.convert("RGBA")
     im = im.point(lambda x: x * .9)
     draw = ImageDraw.Draw(im)
+    width = im.size[0]
+    height = im.size[1]
+
+    box = (math.floor(width*interval[0]), 0, math.floor(width*interval[1]), height)
+    draw.rectangle(box, fill=(255, 0, 0))
 
     for (percent, score, time) in scores:
-        width = im.size[0]
         comment_x = math.floor(width*percent)
         if score == "negative":
-            draw.line((comment_x,0, comment_x, im.size[1]), fill=(255, 0, 0))
+            draw.line((comment_x,0, comment_x, height), fill=(255, 0, 0))
         elif score == "neutral":
-            draw.line((comment_x,0, comment_x, im.size[1]), fill=(128, 128, 128))
+            draw.line((comment_x,0, comment_x, height), fill=(128, 128, 128))
         elif score == "semi_positive":
-            draw.line((comment_x,0, comment_x, im.size[1]), fill=(0, 153, 153))
+            draw.line((comment_x,0, comment_x, height), fill=(0, 153, 153))
         else:
-            draw.line((comment_x,0, comment_x, im.size[1]), fill=(0, 153, 0))
+            draw.line((comment_x,0, comment_x, height), fill=(0, 153, 0))
 
     im.save("./static/img/processed_" + url.split('/')[-1])
 
-def find_window(scores, time, window_size):
+def find_window(scores, duration, window_size):
     left = 0
     best_sum = 0
-    best_window = (0, window_size)
+    best_window = (0, float(window_size) / duration)
 
-    for right in range(window_size, time, 1000):
+    for right in range(window_size, duration, 1000):
         window_sum = 0
         comments_in_window = [x for x in scores if left <= int(x[2]) <= right]
         for (percent, score, time) in comments_in_window:
@@ -176,13 +179,12 @@ def find_window(scores, time, window_size):
                 window_sum += 1
             elif score == "really_positive":
                 window_sum += 2
-        print "checking: " + str((left, right)) + "score: " + str(window_sum)
         if window_sum > best_sum:
             best_sum = window_sum
-            best_window = (left, right)
+            best_window = (float(left) / duration, float(right) / duration)
         left += 1000
 
-    print best_window
+    return best_window
 
 @app.route('/')
 def index():
