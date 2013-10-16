@@ -121,7 +121,8 @@ def get_comments_from_url(target):
 
     scores = score_comments(comments, duration)
 
-    drawLines(waveform, scores)
+    draw_lines(waveform, scores)
+    find_window(scores, int(duration), 30000)
 
     result = {'id': id, 'waveform_url': waveform, 'duration': duration, 'comments': comments, 'scores': scores}
     return result
@@ -132,12 +133,13 @@ def score_comments(comments, time):
         try:
             percent = float(str(comment['timestamp'])) / time
             score = classifier.classify(feature_extractor(comment['body'].split()))
-            scores.append((percent, score))
+            timestamp = str(comment['timestamp'])
+            scores.append((percent, score, timestamp))
         except ValueError:
             pass
     return scores
 
-def drawLines(url, scores):
+def draw_lines(url, scores):
     location = "./static/img/" + url.split('/')[-1]
     urllib.urlretrieve(url, location)
     im = Image.open(location)
@@ -145,7 +147,7 @@ def drawLines(url, scores):
     im = im.point(lambda x: x * .9)
     draw = ImageDraw.Draw(im)
 
-    for (percent, score) in scores:
+    for (percent, score, time) in scores:
         width = im.size[0]
         comment_x = math.floor(width*percent)
         if score == "negative":
@@ -159,6 +161,29 @@ def drawLines(url, scores):
 
     im.save("./static/img/processed_" + url.split('/')[-1])
 
+def find_window(scores, time, window_size):
+    left = 0
+    best_sum = 0
+    best_window = (0, window_size)
+
+    for right in range(window_size, time, 1000):
+        window_sum = 0
+        comments_in_window = [x for x in scores if left <= int(x[2]) <= right]
+        for (percent, score, time) in comments_in_window:
+            if score == "negative":
+                window_sum -= 1
+            elif score == "semi_positive":
+                window_sum += 1
+            elif score == "really_positive":
+                window_sum += 2
+        print "checking: " + str((left, right)) + "score: " + str(window_sum)
+        if window_sum > best_sum:
+            best_sum = window_sum
+            best_window = (left, right)
+        left += 1000
+
+    print best_window
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -169,4 +194,4 @@ def get_comments():
     return json.dumps(get_comments_from_url(target=url))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
