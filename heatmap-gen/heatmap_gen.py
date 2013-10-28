@@ -2,7 +2,6 @@ from flask import Flask
 from flask import request
 from flask import render_template
 import os, sys, nltk, soundcloud, json
-import urllib, math
 from nltk.corpus import stopwords
 
 app = Flask(__name__)
@@ -99,7 +98,6 @@ def get_comments_from_url(target):
         value['timestamp'] = comment.timestamp
         value['created_at'] = comment.created_at
         comments.append(value)
-
 
     page = 1
     while not len(current) == 0:
