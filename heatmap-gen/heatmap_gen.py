@@ -1,7 +1,8 @@
 from flask import Flask
 from flask import request
 from flask import render_template
-import os, sys, nltk, soundcloud, json, Image, ImageDraw, urllib, math
+import os, sys, nltk, soundcloud, json
+import urllib, math
 from nltk.corpus import stopwords
 
 app = Flask(__name__)
@@ -16,13 +17,6 @@ def getwords(tweets):
     for (words, sentiment) in tweets:
         allwords.extend(words)
     return allwords
-
-#Order a list of tweets by their frequency.
-def getwordfeatures(listoftweets):
-    #Print out wordfreq if you want to have a look at the individual counts of words.
-    wordfreq = nltk.FreqDist(listoftweets)
-    words = wordfreq.keys()
-    return words
 
 def feature_extractor(doc):
     docwords = set(doc)
@@ -57,6 +51,7 @@ for i in range(0,len(neutral)):
 for i in range(0,len(negative)):
     neglist.append('negative')
 
+#Tag comments with their appropriate category
 rptagged = zip(really_positive, rplist)
 sptagged = zip(semi_positive, splist)
 neuttagged = zip(neutral, neutlist)
@@ -78,6 +73,7 @@ customstopwords = ['download', 'link', 'music', 'synth', 'i\'m', 'u', 'balls', '
                    'deadmau5', 'work', 'ride', 'it!', 'track!', 'this.', 'dude', 'job', 'god', 'cookies',
                    'milk', 'work.', 'go', 'dick', 'ass', 'n', 'please']
 
+#Remove stopwords, which don't add to the sentiment of the comment, standard library of these and custom
 wordlist = wordlist = [i for i in getwords(tweets) if not i in stopwords.words('english')]
 wordlist = [i for i in wordlist if not i in customstopwords]
 
@@ -88,8 +84,6 @@ print classifier.show_most_informative_features(n=50)
 
 def get_comments_from_url(target):
     track = client.get('/resolve', url=target)
-
-    #pprint(vars(track))
 
     id = track.id
     waveform = track.waveform_url
@@ -106,6 +100,7 @@ def get_comments_from_url(target):
         value['created_at'] = comment.created_at
         comments.append(value)
 
+
     page = 1
     while not len(current) == 0:
         current = client.get('/tracks/' + str(id) + '/comments', limit=page_size, offset=page*page_size)
@@ -120,8 +115,7 @@ def get_comments_from_url(target):
         page += 1
 
     scores = score_comments(comments, duration)
-    interval = find_window(scores, duration, 30000)
-    draw_lines(waveform, scores, interval)
+    find_window(scores, duration, 8000)
 
     result = {'id': id, 'waveform_url': waveform, 'duration': duration, 'comments': comments, 'scores': scores}
     return result
@@ -138,36 +132,10 @@ def score_comments(comments, time):
             pass
     return scores
 
-def draw_lines(url, scores, interval):
-    location = "./static/img/" + url.split('/')[-1]
-    urllib.urlretrieve(url, location)
-    im = Image.open(location)
-    im = im.convert("RGBA")
-    im = im.point(lambda x: x * .9)
-    draw = ImageDraw.Draw(im)
-    width = im.size[0]
-    height = im.size[1]
-
-    box = (math.floor(width*interval[0]), 0, math.floor(width*interval[1]), height)
-    draw.rectangle(box, fill=(255, 0, 0))
-
-    for (percent, score, time) in scores:
-        comment_x = math.floor(width*percent)
-        if score == "negative":
-            draw.line((comment_x,0, comment_x, height), fill=(255, 0, 0))
-        elif score == "neutral":
-            draw.line((comment_x,0, comment_x, height), fill=(128, 128, 128))
-        elif score == "semi_positive":
-            draw.line((comment_x,0, comment_x, height), fill=(0, 153, 153))
-        else:
-            draw.line((comment_x,0, comment_x, height), fill=(0, 153, 0))
-
-    im.save("./static/img/processed_" + url.split('/')[-1])
-
 def find_window(scores, duration, window_size):
     left = 0
     best_sum = 0
-    best_window = (0, float(window_size) / duration)
+    best_window = (0, float(window_size))
 
     for right in range(window_size, duration, 1000):
         window_sum = 0
@@ -181,9 +149,9 @@ def find_window(scores, duration, window_size):
                 window_sum += 2
         if window_sum > best_sum:
             best_sum = window_sum
-            best_window = (float(left) / duration, float(right) / duration)
+            best_window = (float(left), float(right))
         left += 1000
-
+    print best_window
     return best_window
 
 @app.route('/')
