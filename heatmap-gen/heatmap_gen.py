@@ -1,8 +1,18 @@
 from flask import Flask
 from flask import request
 from flask import render_template
-import os, sys, nltk, soundcloud, json
+import os
+import sys
+import nltk
+import soundcloud
+import json
+import math
+import urllib
+import Image
+import ImageDraw
+import unirest
 from nltk.corpus import stopwords
+from pprint import pprint
 
 app = Flask(__name__)
 app.config.from_envvar('SC_SENTIMENT_SETTINGS')
@@ -112,10 +122,22 @@ def get_comments_from_url(target):
 
         page += 1
 
-    scores = score_comments(comments, duration)
-    find_window(scores, duration, 8000)
+    corpus = []
+    for comment in comments:
+        corpus.extend(comment['body'].split())
 
-    result = {'id': id, 'waveform_url': waveform, 'duration': duration, 'comments': comments, 'scores': scores}
+    corpus_post = " ".join(corpus)
+
+    response = unirest.post("https://gatheringpoint-word-cloud-maker.p.mashape.com/index.php",
+                            headers={"X-Mashape-Authorization": "i27GpdJndOzwUF62rpd7oyoMucwxIdL1"},
+                            params={"height": 500, "textblock": corpus_post, "width": 500, "config": ""})
+
+    scores = score_comments(comments, duration)
+    interval = find_window(scores, duration, 8000)
+    #Upload image via Ink
+    draw_lines(waveform, scores, interval)
+
+    result = {'id': id, 'word_cloud_url': response.body['url']}
     return result
 
 def score_comments(comments, time):
@@ -133,7 +155,7 @@ def score_comments(comments, time):
 def find_window(scores, duration, window_size):
     left = 0
     best_sum = 0
-    best_window = (0, float(window_size))
+    best_window = (0, float(window_size) / duration)
 
     for right in range(window_size, duration, 1000):
         window_sum = 0
@@ -147,10 +169,35 @@ def find_window(scores, duration, window_size):
                 window_sum += 2
         if window_sum > best_sum:
             best_sum = window_sum
-            best_window = (float(left), float(right))
+            best_window = (float(left) / duration, float(right) / duration)
         left += 1000
-    print best_window
     return best_window
+
+def draw_lines(url, scores, interval):
+    location = "./static/img/" + url.split('/')[-1]
+    urllib.urlretrieve(url, location)
+    im = Image.open(location)
+    im = im.convert("RGBA")
+    im = im.point(lambda x: x * .9)
+    draw = ImageDraw.Draw(im)
+    width = im.size[0]
+    height = im.size[1]
+
+    box = (math.floor(width*interval[0]), 0, math.floor(width*interval[1]), height)
+    draw.rectangle(box, fill=(255, 0, 0))
+
+    for (percent, score, time) in scores:
+        comment_x = math.floor(width*percent)
+        if score == "negative":
+            draw.line((comment_x,0, comment_x, height), fill=(255, 0, 0))
+        elif score == "neutral":
+            draw.line((comment_x,0, comment_x, height), fill=(128, 128, 128))
+        elif score == "semi_positive":
+            draw.line((comment_x,0, comment_x, height), fill=(0, 153, 153))
+        else:
+            draw.line((comment_x,0, comment_x, height), fill=(0, 153, 0))
+
+    im.save("./static/img/processed_" + url.split('/')[-1])
 
 @app.route('/')
 def index():
@@ -162,4 +209,4 @@ def get_comments():
     return json.dumps(get_comments_from_url(target=url))
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
