@@ -134,7 +134,6 @@ def get_comments_from_url(target):
 
     scores = score_comments(comments, duration)
     interval = find_window(scores, duration, 8000)
-    #Upload image via Ink
     draw_lines(waveform, scores, interval)
 
     result = {'id': id, 'word_cloud_url': response.body['url']}
@@ -209,4 +208,4 @@ def get_comments():
     return json.dumps(get_comments_from_url(target=url))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
