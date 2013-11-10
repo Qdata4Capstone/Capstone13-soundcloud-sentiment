@@ -129,14 +129,14 @@ def get_comments_from_url(target):
     corpus_post = " ".join(corpus)
 
     response = unirest.post("https://gatheringpoint-word-cloud-maker.p.mashape.com/index.php",
-                            headers={"X-Mashape-Authorization": "i27GpdJndOzwUF62rpd7oyoMucwxIdL1"},
+                            headers={"X-Mashape-Authorization": app.config['MASHAPE_KEY']},
                             params={"height": 500, "textblock": corpus_post, "width": 500, "config": ""})
 
     scores = score_comments(comments, duration)
     interval = find_window(scores, duration, 8000)
-    draw_lines(waveform, scores, interval)
+    upload = draw_lines(waveform, scores, interval)
 
-    result = {'id': id, 'word_cloud_url': response.body['url']}
+    result = {'id': id, 'word_cloud_url': response.body['url'], 'waveform': upload}
     return result
 
 def score_comments(comments, time):
@@ -196,7 +196,10 @@ def draw_lines(url, scores, interval):
         else:
             draw.line((comment_x,0, comment_x, height), fill=(0, 153, 0))
 
-    im.save("./static/img/processed_" + url.split('/')[-1])
+    destination_file = "./static/img/processed_" + url.split('/')[-1]
+    im.save(destination_file)
+    response = unirest.post("https://www.filepicker.io/api/store/S3?key=" + app.config['INK_KEY'], params={"fileUpload": open(destination_file, mode="r")})
+    return response.body['url']
 
 @app.route('/')
 def index():
@@ -208,4 +211,4 @@ def get_comments():
     return json.dumps(get_comments_from_url(target=url))
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
