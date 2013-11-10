@@ -15,7 +15,7 @@ if __name__ == '__main__':
             table[count].append(data[str(x)][rank])
         count = count + 1
 
-    fl = open('dj-mag-top-100.csv', 'w')
+    fl = open('../datasets/dj-mag-top-100.csv', 'w')
 
     writer = csv.writer(fl)
     for values in table:
