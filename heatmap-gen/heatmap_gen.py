@@ -205,10 +205,14 @@ def draw_lines(url, scores, interval):
 def index():
     return render_template('index.html')
 
+@app.route('/top100')
+def top_100():
+    return render_template('top100.html')
+
 @app.route('/comments')
 def get_comments():
     url = request.args.get('url')
     return json.dumps(get_comments_from_url(target=url))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
