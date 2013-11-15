@@ -2,11 +2,7 @@
 <html>
 <head>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-</head>
-<body>
-    <div id="viz"></div>
-
+    <script src="http://code.jquery.com/jquery-2.0.3.js"></script>
     <script>
     d3.text("../static/datasets/dj-mag-top-100.csv", function(datasetText) {
 
@@ -24,13 +20,16 @@
         .selectAll("td")
         .data(function(d){return d;})
         .enter().append("td")
+        .attr("class", function(d){return d.replace(/\s+/g, '').replace('&', '');})
         .style("border", "1px black solid")
         .style("padding", "5px")
-        .on("mouseover", function(){d3.select(this).style("background-color", "aliceblue")})
-        .on("mouseout", function(){d3.select(this).style("background-color", "white")})
         .text(function(d){return d;})
         .style("font-size", "12px");
     });
     </script>
+    <script src="../static/js/top100.js"></script>
+</head>
+<body>
+    <div id="viz"></div>
 </body>
 </html>
