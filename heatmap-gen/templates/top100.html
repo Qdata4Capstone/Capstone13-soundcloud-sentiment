@@ -3,6 +3,10 @@
 <head>
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="http://code.jquery.com/jquery-2.0.3.js"></script>
+    <link rel="stylesheet" href="../static/css/top100.css">
+</head>
+<body>
+    <div id="viz"></div>
     <script>
     d3.text("../static/datasets/dj-mag-top-100.csv", function(datasetText) {
 
@@ -24,12 +28,8 @@
         .style("border", "1px black solid")
         .style("padding", "5px")
         .text(function(d){return d;})
-        .style("font-size", "12px");
     });
     </script>
     <script src="../static/js/top100.js"></script>
-</head>
-<body>
-    <div id="viz"></div>
 </body>
 </html>
