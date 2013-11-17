@@ -1,4 +1,4 @@
-source,target,edge
+source,target,value
 Simon Patterson,Alex Di Stefano,play
 Simon Patterson,Alex Di Stefano,play
 Simon Patterson,The Advent & Industrialyzer,play
@@ -17,7 +17,6 @@ Simon Patterson,Will Atkinson,play
 Simon Patterson,Darren Porter & Simon Dixon,play
 Simon Patterson,Simon Patterson,play
 Simon Patterson,E-Clip,play
-Simon Patterson,ID,id
 Simon Patterson,Blazer,remix
 Simon Patterson,Astrix,play
 Simon Patterson,Blazer,collab
@@ -83,7 +82,6 @@ Nicky Romero,Qulinez,play
 Nicky Romero,NERVO,collab
 Nicky Romero,Krewella,play
 Nicky Romero,Evol Waves,play
-Diplo,ID,id
 Diplo,Diplo,play
 Diplo,DJ Fresh,collab
 Diplo,PTAF,play
@@ -97,8 +95,6 @@ Diplo,Afrojack,play
 Diplo,Major Lazer,play
 Diplo,Icona Pop,acappella
 Diplo,GTA,play
-Diplo,ID,id
-Diplo,ID,id
 Diplo,GTA,play
 Diplo,Riva Starr,acappella
 Diplo,Fatboy Slim,acappella
@@ -116,7 +112,6 @@ Diplo,Rell,play
 Diplo,Just Blaze,play
 Diplo,Flux Pavilion,play
 Diplo,Carnage,play
-Diplo,ID,id
 Diplo,Calvin Harris,remix
 Diplo,Diplo,play
 Diplo,Flosstradamus,play
