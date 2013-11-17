@@ -122,7 +122,7 @@ var node = svg.selectAll(".node")
 
 // add the nodes
 node.append("circle")
-    .attr("r", 5);
+    .attr("r", 4);
 
 // add the text
 node.append("text")
@@ -160,7 +160,7 @@ function click() {
         .style("font", "20px sans-serif");
     d3.select(this).select("circle").transition()
         .duration(750)
-        .attr("r", 16)
+        .attr("r", 10)
         .style("fill", "lightsteelblue");
 }
 
@@ -168,7 +168,7 @@ function click() {
 function dblclick() {
     d3.select(this).select("circle").transition()
         .duration(750)
-        .attr("r", 6)
+        .attr("r", 4)
         .style("fill", "#ccc");
     d3.select(this).select("text").transition()
         .duration(750)
