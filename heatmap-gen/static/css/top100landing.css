@@ -11,3 +11,21 @@ h1 {
 #main {
     text-align: center;
 }
+
+.search {
+    width: 500px;
+    height: 40px;
+    border: 1px solid #ccc;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    font-size: 15px;
+    padding: 4px 7px;
+    outline: 0;
+    -webkit-appearance: none;
+    color: #444546;
+}
+
+.search:focus {
+    border-color: #FFAB19;
+}
