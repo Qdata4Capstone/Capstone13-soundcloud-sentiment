@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>DJ Mag Top 100</title>
+
+
+    <link rel="stylesheet" href="../static/css/foundation.css">
+    <link rel="stylesheet" href="../static/css/top100landing.css">
+    <script src="../static/js/vendor/custom.modernizr.js"></script>
+
+</head>
+<body>
+
+    <div class="row">
+		<div class="large-8 columns">
+			<label>DJ Name</label>
+            <input class="search" type="text" placeholder="Enter a DJ Name...">
+		</div>
+	</div>
+
+    <script src="../static/js/vendor/jquery.js"></script>
+    <script src="../static/js/foundation.min.js"></script>
+    <script src="../static/js/typeahead.js"></script>
+    <script src="../static/js/hogan-2.0.0.js"></script>
+    <!--
+
+    <script src="js/foundation/foundation.js"></script>
+
+    <script src="js/foundation/foundation.interchange.js"></script>
+
+    <script src="js/foundation/foundation.abide.js"></script>
+
+    <script src="js/foundation/foundation.dropdown.js"></script>
+
+    <script src="js/foundation/foundation.placeholder.js"></script>
+
+    <script src="js/foundation/foundation.forms.js"></script>
+
+    <script src="js/foundation/foundation.alerts.js"></script>
+
+    <script src="js/foundation/foundation.magellan.js"></script>
+
+    <script src="js/foundation/foundation.reveal.js"></script>
+
+    <script src="js/foundation/foundation.tooltips.js"></script>
+
+    <script src="js/foundation/foundation.clearing.js"></script>
+
+    <script src="js/foundation/foundation.cookie.js"></script>
+
+    <script src="js/foundation/foundation.joyride.js"></script>
+
+    <script src="js/foundation/foundation.orbit.js"></script>
+
+    <script src="js/foundation/foundation.section.js"></script>
+
+    <script src="js/foundation/foundation.topbar.js"></script>
+
+    -->
+
+    <script>
+        $(document).foundation();
+
+        $(document).ready(function(){
+           $('input.search').typeahead({
+              name: 'accounts',
+              local: ['timtrueman', 'JakeHardinglllllllllll', 'vskarich'],
+              template: '<p><strong>{{value}}</strong> – 2012</p>',
+              engine: Hogan
+            });
+        });
+
+    </script>
+</body>
+</html>

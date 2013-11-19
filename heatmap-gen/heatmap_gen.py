@@ -207,7 +207,7 @@ def index():
 
 @app.route('/top100')
 def top_100():
-    return render_template('top100.html')
+    return render_template('top100landing.html')
 
 @app.route('/comments')
 def get_comments():
