@@ -11,6 +11,7 @@ import urllib
 import Image
 import ImageDraw
 import unirest
+import pyimgur
 from nltk.corpus import stopwords
 from pprint import pprint
 
@@ -198,15 +199,26 @@ def draw_lines(url, scores, interval):
 
     destination_file = "./static/img/processed_" + url.split('/')[-1]
     im.save(destination_file)
-    response = unirest.post("https://www.filepicker.io/api/store/S3?key=" + app.config['INK_KEY'], params={"fileUpload": open(destination_file, mode="r")})
-    return response.body['url']
+
+    im = pyimgur.Imgur(app.config['IMGUR_KEY'])
+    uploaded_image = im.upload_image(destination_file, title="Waveform")
+
+    return uploaded_image.link
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
+@app.route('/tomorrowworld')
+def tomorrowworld():
+    return render_template('tomorrowworld.html')
+
 @app.route('/top100')
 def top_100():
+    return render_template('top100.html')
+
+@app.route('/top100landing')
+def top_100landing():
     return render_template('top100landing.html')
 
 @app.route('/comments')
