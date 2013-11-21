@@ -3,4 +3,4 @@ Weekly Progress.txt
 .DS_store
 *.pyc
 settings.cfg
-static/img/
+heatmap-gen/static/img/
