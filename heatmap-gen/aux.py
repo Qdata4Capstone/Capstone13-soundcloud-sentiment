@@ -1,5 +1,5 @@
 import heatmap_gen
-import jso
+import json
 
 def check_dups(file_contents):
     tracks = set()
