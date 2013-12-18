@@ -1,6 +1,6 @@
 import json
-import csv
-
+import cluster
+from cluster import KMeansClustering
 
 def cluster_trajectories():
     json_data = open('static/datasets/dj-mag-top-100.json')
@@ -12,6 +12,7 @@ def cluster_trajectories():
             uniques_djs.add(name)
 
     dj_vectors = []
+    dj_vector_map = {}
 
     for dj in uniques_djs:
         trajectory = ()
@@ -21,8 +22,12 @@ def cluster_trajectories():
             else:
                 trajectory += (-999,)
         dj_vectors.append(trajectory)
+        dj_vector_map[trajectory] = dj
 
-    print dj_vectors
+    cl = KMeansClustering(dj_vectors)
+    clusters = cl.getclusters(20)
+
+    print clusters
 
     #Close file stream
     json_data.close()
