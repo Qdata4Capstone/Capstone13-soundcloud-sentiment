@@ -7,7 +7,7 @@ Four main areas I will be focusing on are:
 * Using timed comment sentiment to generate a heatmap associated with a given SoundCloud track
 * Clustering timed comments for intelligent previews
 * Looking for trends in the BeatPort top charts
-* Distribution of sentiment among remixes
+* Looking for trends in the DJ Mag Top 100 charts (17 years worth of data)
 * Graphing artists' use of other musician's songs in their sets at festivals such as TomorrowWorld / UMF
 
 All subtasks and goals are open to the public and can be viewed here:
