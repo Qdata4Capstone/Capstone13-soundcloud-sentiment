@@ -27,7 +27,14 @@ def cluster_trajectories():
     cl = KMeansClustering(dj_vectors)
     clusters = cl.getclusters(20)
 
-    print clusters
+    dj_clusters = []
+    for cluster in clusters:
+        dj_group = []
+        for vector in cluster:
+            dj_group.append(dj_vector_map[vector])
+        dj_clusters.append(dj_group)
+
+    print json.dumps(dj_clusters)
 
     #Close file stream
     json_data.close()
