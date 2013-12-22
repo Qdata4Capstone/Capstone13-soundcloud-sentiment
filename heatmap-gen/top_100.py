@@ -1,6 +1,8 @@
 import json
 import cluster
 from cluster import KMeansClustering
+import colorsys
+from math import fmod
 
 def cluster_trajectories():
     json_data = open('static/datasets/dj-mag-top-100.json')
@@ -25,7 +27,7 @@ def cluster_trajectories():
         dj_vector_map[trajectory] = dj
 
     cl = KMeansClustering(dj_vectors)
-    clusters = cl.getclusters(20)
+    clusters = cl.getclusters(10)
 
     dj_clusters = []
     for cluster in clusters:
