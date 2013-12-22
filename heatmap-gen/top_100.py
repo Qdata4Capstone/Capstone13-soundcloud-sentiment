@@ -1,7 +1,5 @@
 import json
 from cluster import KMeansClustering
-from itertools import groupby
-from operator import itemgetter
 
 def cluster_trajectories():
     json_data = open('static/datasets/dj-mag-top-100.json')
