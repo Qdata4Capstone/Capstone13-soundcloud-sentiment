@@ -1,8 +1,7 @@
 import json
-import cluster
 from cluster import KMeansClustering
-import colorsys
-from math import fmod
+from itertools import groupby
+from operator import itemgetter
 
 def cluster_trajectories():
     json_data = open('static/datasets/dj-mag-top-100.json')
@@ -15,8 +14,6 @@ def cluster_trajectories():
 
     dj_vectors = []
     dj_vector_map = {}
-
-    print "[" + ", ".join(map(lambda x: '"' + str(x) + '"', uniques_djs)) + "]"
 
     for dj in uniques_djs:
         trajectory = ()
@@ -43,5 +40,60 @@ def cluster_trajectories():
     #Close file stream
     json_data.close()
 
+def get_trajectory(dj, data):
+    years = []
+    rank = []
+
+    for year in range(1997, 2014):
+        if dj in data[str(year)]:
+            years.append(year)
+            rank.append(data[str(year)].index(dj) + 1)
+
+    return years, rank
+
+def get_streak(years):
+    if len(years) == 1:
+        return 1
+
+    best = 1
+    current = 1
+    for i in range(0, len(years) - 1):
+        if years[i+1] == years[i] + 1:
+            current += 1
+            best = max(current, best)
+        else:
+            current = 0
+
+    return best
+
+def generate_stats():
+    json_data = open('static/datasets/dj-mag-top-100.json')
+    data = json.load(json_data)
+
+    uniques_djs = set()
+
+    for year in range(1997, 2014):
+        for name in data[str(year)]:
+            uniques_djs.add(name)
+
+    out = {}
+
+    for dj in uniques_djs:
+        dj_meta = {}
+        years, ranks = get_trajectory(dj, data)
+        dj_meta["years"] = years
+        dj_meta["ranks"] = ranks
+        dj_meta["highest"] = min(ranks)
+        dj_meta["first"] = ranks[0]
+        dj_meta["spread"] = max(ranks) - min(ranks)
+        dj_meta["num_consecutive"] = get_streak(years)
+
+        out[dj] = dj_meta
+
+    print json.dumps(out)
+
+    #Close file stream
+    json_data.close()
+
 if __name__ == '__main__':
-    cluster_trajectories()
+    generate_stats()
