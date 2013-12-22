@@ -109,6 +109,12 @@ p {
   margin: 0;
 }
 
+#chart{
+    margin-left: auto;
+    margin-right: auto;
+    width: 800px;
+}
+
 /* Sticky footer block */
 * {
     margin: 0;

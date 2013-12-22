@@ -5,4 +5,66 @@ $(document).ready(function(){
       template: '<p>{{value}}</p>',
       engine: Hogan
     });
+
+    $('#chart').highcharts({
+            chart: {
+                zoomType: 'xy',
+                width: 800
+            },
+            title: {
+                text: 'DJMag Top 100 Rankings'
+            },
+            xAxis: {
+                title: {
+                    enabled: true,
+                    text: 'Year'
+                },
+                showLastLabel: true,
+                labels: {
+                    format: "{value}"
+                }
+            },
+            yAxis: {
+                title: {
+                    text: 'Rank'
+                },
+                reversed: "true",
+                min: 1
+            },
+            plotOptions: {
+                scatter: {
+                    marker: {
+                        radius: 5,
+                        states: {
+                            hover: {
+                                enabled: true,
+                                lineColor: 'rgb(100,100,100)'
+                            }
+                        }
+                    },
+                    states: {
+                        hover: {
+                            marker: {
+                                enabled: false
+                            }
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<b>{series.name}</b><br>',
+                        pointFormat: '{point.x}, #{point.y}'
+                    }
+                }
+            },
+            series: [{
+                name: 'Steve Angello',
+                data: [[2006,66],[2007,46],[2008,63],[2009,20],[2010,14],[2011,23],[2012,57],[2013,38]]
+
+            }, {
+                name: 'Axwell',
+                data: [[2006,93],[2007,33],[2008,20],[2009,14],[2010,10],[2011,12],[2012,23],[2013,19]]
+            },{
+                name: 'Sebastian Ingrosso',
+                data: [[2009,25],[2010,16],[2011,26],[2012,34],[2013,18]]
+            }]
+        });
 });
