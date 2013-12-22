@@ -16,6 +16,8 @@ def cluster_trajectories():
     dj_vectors = []
     dj_vector_map = {}
 
+    print "[" + ", ".join(map(lambda x: '"' + str(x) + '"', uniques_djs)) + "]"
+
     for dj in uniques_djs:
         trajectory = ()
         for year in range(1997, 2014):

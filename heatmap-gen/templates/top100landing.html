@@ -1,82 +1,30 @@
 <!DOCTYPE html>
-<!--[if IE 8]> <html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
-
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>DJ Mag Top 100</title>
-
+    <title>UVA People Search</title>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:800italic,400' rel='stylesheet' type='text/css'>
-    <!--<link rel="stylesheet" href="../static/css/foundation.css">-->
     <link rel="stylesheet" href="../static/css/top100landing.css">
-
-    <script src="../static/js/vendor/custom.modernizr.js"></script>
-
+    <!--<link rel="shortcut icon" href="../static/img/favicon.ico" type="image/x-icon">-->
+    <!--<link rel="icon" href="../static/img/favicon.ico" type="image/x-icon">-->
 </head>
 <body>
 
+    <div class="wrapper">
+        <h1>DJMag Top 100 Data</h1>
 
-    <h1>DJMag Top 100 Data</h1>
-
-    <div id="main">
-        <input class="search" type="text" placeholder="Enter a DJ Name...">
+        <div id="main">
+            <input class="search-page" type="text" placeholder="Enter DJ name...">
+        </div>
     </div>
 
+    <div class="push"></div>
 
-
-    <script src="../static/js/vendor/jquery.js"></script>
-    <script src="../static/js/foundation.min.js"></script>
+    <div class="footer">
+        Made with love by <a href="https://twitter.com/jasdev" target="_blank">@jasdev</a>
+    </div>
+    <script src="../static/js/jquery.js"></script>
     <script src="../static/js/typeahead.js"></script>
     <script src="../static/js/hogan-2.0.0.js"></script>
-    <!--
-
-    <script src="js/foundation/foundation.js"></script>
-
-    <script src="js/foundation/foundation.interchange.js"></script>
-
-    <script src="js/foundation/foundation.abide.js"></script>
-
-    <script src="js/foundation/foundation.dropdown.js"></script>
-
-    <script src="js/foundation/foundation.placeholder.js"></script>
-
-    <script src="js/foundation/foundation.forms.js"></script>
-
-    <script src="js/foundation/foundation.alerts.js"></script>
-
-    <script src="js/foundation/foundation.magellan.js"></script>
-
-    <script src="js/foundation/foundation.reveal.js"></script>
-
-    <script src="js/foundation/foundation.tooltips.js"></script>
-
-    <script src="js/foundation/foundation.clearing.js"></script>
-
-    <script src="js/foundation/foundation.cookie.js"></script>
-
-    <script src="js/foundation/foundation.joyride.js"></script>
-
-    <script src="js/foundation/foundation.orbit.js"></script>
-
-    <script src="js/foundation/foundation.section.js"></script>
-
-    <script src="js/foundation/foundation.topbar.js"></script>
-
-    -->
-
-    <script>
-        $(document).foundation();
-
-        $(document).ready(function(){
-           $('input.search').typeahead({
-              name: 'accounts',
-              local: ['timtrueman', 'JakeHardinglllllllllll', 'vskarich'],
-              template: '<p><strong>{{value}}</strong> – 2012</p>',
-              engine: Hogan
-            });
-        });
-
-    </script>
+    <script src="../static/js/top100landing.js"></script>
 </body>
 </html>
