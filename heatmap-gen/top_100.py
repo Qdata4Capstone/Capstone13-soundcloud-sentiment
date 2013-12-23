@@ -79,8 +79,10 @@ def generate_stats():
     for dj in uniques_djs:
         dj_meta = {}
         years, ranks = get_trajectory(dj, data)
-        dj_meta["years"] = years
-        dj_meta["ranks"] = ranks
+        points = []
+        for i in range(0, len(years)):
+            points.append([years[i], ranks[i]])
+        dj_meta["data"] = points
         dj_meta["highest"] = min(ranks)
         dj_meta["first"] = ranks[0]
         dj_meta["spread"] = max(ranks) - min(ranks)

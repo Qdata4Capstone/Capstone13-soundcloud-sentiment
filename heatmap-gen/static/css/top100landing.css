@@ -115,6 +115,24 @@ p {
     width: 800px;
 }
 
+.clear{
+    width: 100px;
+    height: 40px;
+    border-radius: 8px;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border: 2px solid #0097CF;
+    text-align: center;
+    line-height: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 200px;
+}
+
+.clear:hover{
+    background-color: rgba(0, 151, 207, 0.20);
+}
+
 /* Sticky footer block */
 * {
     margin: 0;
