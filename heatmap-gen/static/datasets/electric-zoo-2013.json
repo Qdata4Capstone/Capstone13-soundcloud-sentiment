@@ -22,21 +22,20 @@
 	{"name": "Ferry Corsten", "size": 10, "links":["Orjan Nilsen"]},
 	{"name": "Flux Pavilion", "size": 10, "links":["Kill The Noise"]},
 	{"name": "Hardwell", "size": 10, "links":["Above & Beyond", "Dyro", "Showtek", "Alesso", "Bingo Players", "Avicii", "David Guetta", "Kill The Noise", "Alvaro", "Sander van Doorn"]},
+	{"name": "Henrix", "size": 10, "links":["Mat Zo", "Hardwell", "Avicii", "David Guetta", "Bingo Players", "Deniz Koyu", "Dyro", "Dannic"]},
+	{"name": "Jack Beats", "size": 10, "links":["Flux Pavilion"]},
+	{"name": "John O'Callaghan", "size": 10, "links":[]},
+	{"name": "Kill The Noise", "size": 10, "links":["Flux Pavilion", "Knife Party"]},
+	{"name": "Knife Party", "size": 10, "links":["Alvaro", "Showtek", "Hardwell", "Kill The Noise", "Dannic", "Sander van Doorn"]},
+	{"name": "Kyau & Albert", "size": 10, "links":["Sander van Doorn", "Ferry Corsten", "Above & Beyond", "Mat Zo"]},
+	{"name": "Martin Solveig", "size": 10, "links":["Torro Torro", "Hardwell", "Mat Zo", "Dog Blood"]},
+	{"name": "Mat Zo", "size": 10, "links":["Above & Beyond", "Knife Party", "Hardwell", "Torro Torro", "The M Machine", "Kill The Noise", "Benny Benassi", "Dada Life"]},
+	{"name": "Orjan Nilsen", "size": 10, "links":["Dannic", "Hardwell"]},
+	{"name": "Sander van Doorn", "size": 10, "links":["Dannic"]},
+	{"name": "Showtek", "size": 10, "links":["Hardwell", "David Guetta", "Alvaro"]},
+	{"name": "The M Machine", "size": 10, "links":["Dog Blood", "Kill The Noise"]},
+	{"name": "Tiesto", "size": 10, "links":["Alvaro", "Showtek", "Alesso", "Hardwell", "Dyro"]},
+	{"name": "Torro Torro", "size": 10, "links":["Knife Party", "Showtek"]},
+	{"name": "Tritonal", "size": 10, "links":["Kill The Noise", "Alesso"]},
+	{"name": "Zomboy", "size": 10, "links":["Knife Party", "Kill The Noise", "Flux Pavilion", "Alvaro"]}
 ]
-
-Henrix
-Jack Beats
-John O'Callaghan
-Kill The Noise
-Knife Party
-Kyau & Albert
-Martin Solveig
-Mat Zo
-Orjan Nilsen
-Sander van Doorn
-Showtek
-The M Machine
-Tiesto
-Torro Torro
-Tritonal
-Zomboy
