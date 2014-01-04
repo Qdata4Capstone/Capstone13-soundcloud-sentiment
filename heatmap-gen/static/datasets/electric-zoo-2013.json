@@ -7,20 +7,20 @@
 	{"name": "Alvaro", "size": 10, "links":["Bingo Players", "A-Trak", "Knife Party", "Henrix", "Avicii", "Hardwell", "Tiesto", "Showtek"]},
 	{"name": "Avicii", "size": 10, "links":["Dog Blood", "Bingo Players"]},
 	{"name": "Bassnectar", "size": 10, "links":[]},
+	{"name": "Benny Benassi", "size": 10, "links":["Kill The Noise", "Hardwell"]},
+	{"name": "Bingo Players", "size": 10, "links":["Alesso", "Knife Party", "Avicii", "Showtek", "Alvaro"]},
+	{"name": "Bro Safari", "size": 10, "links":["Showtek", "Knife Party", "Benny Benassi", "Kill The Noise"]},
+	{"name": "Dada Life", "size": 10, "links":["Tiesto", "Knife Party", "David Guetta", "Showtek"]},
+	{"name": "Dannic", "size": 10, "links":["Hardwell", "David Guetta", "Knife Party", "Alesso", "Showtek", "Dada Life"]},
+	{"name": "Danny Tenaglia", "size": 10, "links":[]},
+	{"name": "Datsik", "size": 10, "links":["Zomboy", "Bassnectar", "Flux Pavilion"]},
+	{"name": "David Guetta", "size": 10, "links":["Martin Solveig", "Showtek", "Alesso"]},
+	{"name": "Deniz Koyu", "size": 10, "links":["Knife Party"]},
+	{"name": "Dog Blood", "size": 10, "links":["The M Machine", "Alesia", "Sander van Doorn", "Tiesto", "Knife Party", "Kill The Noise"]},
+	{"name": "Dyro", "size": 10, "links":["Hardwell", "Tiesto", "Bingo Players", "Alesso", "Showtek", "Otto Knows", "David Guetta"]},
+	{"name": "Fehrplay", "size": 10, "links":[]},
 ]
 
-Benny Benassi
-Bingo Players
-Bro Safari
-Dada Life
-Dannic
-Danny Tenaglia
-Datsik
-David Guetta
-Deniz Koyu
-Dog Blood (Boys Noize & Skrillex)
-Dyro
-Fehrplay
 Ferry Corsten
 Flux Pavilion
 Hardwell
