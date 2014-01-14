@@ -13,7 +13,6 @@ import ImageDraw
 import unirest
 import pyimgur
 from nltk.corpus import stopwords
-from pprint import pprint
 
 app = Flask(__name__)
 app.config.from_envvar('SC_SENTIMENT_SETTINGS')
@@ -189,13 +188,13 @@ def draw_lines(url, scores, interval):
     for (percent, score, time) in scores:
         comment_x = math.floor(width*percent)
         if score == "negative":
-            draw.line((comment_x,0, comment_x, height), fill=(255, 0, 0))
+            draw.line((comment_x, 0, comment_x, height), fill=(255, 0, 0))
         elif score == "neutral":
-            draw.line((comment_x,0, comment_x, height), fill=(128, 128, 128))
+            draw.line((comment_x, 0, comment_x, height), fill=(128, 128, 128))
         elif score == "semi_positive":
-            draw.line((comment_x,0, comment_x, height), fill=(0, 153, 153))
+            draw.line((comment_x, 0, comment_x, height), fill=(0, 153, 153))
         else:
-            draw.line((comment_x,0, comment_x, height), fill=(0, 153, 0))
+            draw.line((comment_x, 0, comment_x, height), fill=(0, 153, 0))
 
     destination_file = "./static/img/processed_" + url.split('/')[-1]
     im.save(destination_file)
