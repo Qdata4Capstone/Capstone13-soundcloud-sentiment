@@ -17,7 +17,7 @@ from nltk.corpus import stopwords
 heatmap_gen = Flask(__name__)
 heatmap_gen.config.from_envvar('SC_SENTIMENT_SETTINGS')
 
-client = soundcloud.Client(client_id=app.config['SOUNDCLOUD_ID'])
+client = soundcloud.Client(client_id=heatmap_gen.config['SOUNDCLOUD_ID'])
 os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 
 #Pull out all of the words in a list of tagged tweets, formatted in tuples.
@@ -129,7 +129,7 @@ def get_comments_from_url(target):
     corpus_post = " ".join(corpus)
 
     response = unirest.post("https://gatheringpoint-word-cloud-maker.p.mashape.com/index.php",
-                            headers={"X-Mashape-Authorization": app.config['MASHAPE_KEY']},
+                            headers={"X-Mashape-Authorization": heatmap_gen.config['MASHAPE_KEY']},
                             params={"height": 500, "textblock": corpus_post, "width": 500, "config": ""})
 
     scores = score_comments(comments, duration)
@@ -199,7 +199,7 @@ def draw_lines(url, scores, interval):
     destination_file = "./static/img/processed_" + url.split('/')[-1]
     im.save(destination_file)
 
-    im = pyimgur.Imgur(app.config['IMGUR_KEY'])
+    im = pyimgur.Imgur(heatmap_gen.config['IMGUR_KEY'])
     uploaded_image = im.upload_image(destination_file, title="Waveform")
 
     return uploaded_image.link
