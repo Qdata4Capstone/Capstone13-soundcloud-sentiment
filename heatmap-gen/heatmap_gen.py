@@ -14,8 +14,8 @@ import unirest
 import pyimgur
 from nltk.corpus import stopwords
 
-app = Flask(__name__)
-app.config.from_envvar('SC_SENTIMENT_SETTINGS')
+heatmap_gen = Flask(__name__)
+heatmap_gen.config.from_envvar('SC_SENTIMENT_SETTINGS')
 
 client = soundcloud.Client(client_id=app.config['SOUNDCLOUD_ID'])
 os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
@@ -204,26 +204,26 @@ def draw_lines(url, scores, interval):
 
     return uploaded_image.link
 
-@app.route('/')
+@heatmap_gen.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/tomorrowworld')
+@heatmap_gen.route('/tomorrowworld')
 def tomorrowworld():
     return render_template('tomorrowworld.html')
 
-@app.route('/top100')
+@heatmap_gen.route('/top100')
 def top_100():
     return render_template('top100.html')
 
-@app.route('/top100landing')
+@heatmap_gen.route('/top100landing')
 def top_100landing():
     return render_template('top100landing.html')
 
-@app.route('/comments')
+@heatmap_gen.route('/comments')
 def get_comments():
     url = request.args.get('url')
     return json.dumps(get_comments_from_url(target=url))
 
 if __name__ == '__main__':
-    app.run()
+    heatmap_gen.run()
