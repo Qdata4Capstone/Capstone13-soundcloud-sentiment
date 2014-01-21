@@ -51,7 +51,7 @@
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
 
-var diameter = 960,
+var diameter = 800,
     radius = diameter / 2,
     innerRadius = radius - 120;
 
@@ -69,10 +69,10 @@ var line = d3.svg.line.radial()
     .angle(function(d) { return d.x / 180 * Math.PI; });
 
 var svg = d3.select("body").append("svg")
-    .attr("width", diameter)
-    .attr("height", diameter)
+    .attr("width", diameter + 300)
+    .attr("height", diameter + 300)
   .append("g")
-    .attr("transform", "translate(" + radius + "," + radius + ")");
+    .attr("transform", "translate(" + (radius + 100) + "," + (radius + 100) + ")");
 
 var link = svg.append("g").selectAll(".link"),
     node = svg.append("g").selectAll(".node");
@@ -99,7 +99,7 @@ d3.json("../static/datasets/electric-zoo-2013.json", function(error, classes) {
       .text(function(d) { return d.key; })
       .on("mouseover", mouseovered)
       .on("mouseout", mouseouted)
-      .style("font-size", "20px");
+      .style("font-size", function(d) { return (d.average_rank === "N/A") ? "10px" : (30 - (1/30)*(d.average_rank)) + "px"; });
 });
 
 function mouseovered(d) {

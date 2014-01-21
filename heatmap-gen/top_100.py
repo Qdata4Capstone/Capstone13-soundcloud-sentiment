@@ -66,36 +66,36 @@ def get_streak(years):
 
     return best
 
-# def generate_stats():
-#     json_data = open('static/datasets/dj-mag-top-100.json')
-#     data = json.load(json_data)
-#
-#     uniques_djs = set()
-#
-#     for year in range(1997, 2014):
-#         for name in data[str(year)]:
-#             uniques_djs.add(name)
-#
-#     out = {}
-#
-#     for dj in uniques_djs:
-#         dj_meta = {}
-#         years, ranks = get_trajectory(dj, data)
-#         points = []
-#         for i in range(0, len(years)):
-#             points.append([years[i], ranks[i]])
-#         dj_meta["data"] = points
-#         dj_meta["highest"] = min(ranks)
-#         dj_meta["first"] = ranks[0]
-#         dj_meta["spread"] = max(ranks) - min(ranks)
-#         dj_meta["num_consecutive"] = get_streak(years)
-#
-#         out[dj] = dj_meta
-#
-#     print json.dumps(out)
-#
-#     #Close file stream
-#     json_data.close()
+def generate_stats():
+    json_data = open('static/datasets/dj-mag-top-100.json')
+    data = json.load(json_data)
+
+    uniques_djs = set()
+
+    for year in range(1997, 2014):
+        for name in data[str(year)]:
+            uniques_djs.add(name)
+
+    out = {}
+
+    for dj in uniques_djs:
+        dj_meta = {}
+        years, ranks = get_trajectory(dj, data)
+        points = []
+        for i in range(0, len(years)):
+            points.append([years[i], ranks[i]])
+        dj_meta["data"] = points
+        dj_meta["highest"] = min(ranks)
+        dj_meta["first"] = ranks[0]
+        dj_meta["spread"] = max(ranks) - min(ranks)
+        dj_meta["num_consecutive"] = get_streak(years)
+
+        out[dj] = dj_meta
+
+    print json.dumps(out)
+
+    #Close file stream
+    json_data.close()
 
 def get_average_rank(dj, data):
     rank = []
@@ -104,11 +104,23 @@ def get_average_rank(dj, data):
         if dj in data[str(year)]:
             rank.append(data[str(year)].index(dj) + 1)
 
-    print rank
-
+    if len(rank) == 0:
+        return "N/A"
+    else:
+        return sum(rank) / float(len(rank))
 
 if __name__ == '__main__':
-    print os.getcwd()
-    # json_data = open('./static/datasets/dj-mag-top-100.json')
-    # data = json.load(json_data)
-    # get_average_rank("Mat Zo", data)
+    json_data = open('./static/datasets/dj-mag-top-100.json')
+    data = json.load(json_data)
+
+    ezoo_data = open('./static/datasets/electric-zoo-2013.json')
+    ezoo_data_parsed = json.load(ezoo_data)
+
+
+    new = []
+
+    for dj in ezoo_data_parsed:
+        dj['average_rank'] = get_average_rank(dj['name'], data)
+        new.append(dj)
+
+    print json.dumps(new)

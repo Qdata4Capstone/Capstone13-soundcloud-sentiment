@@ -199,6 +199,5 @@ def draw_lines(url, scores, interval):
     return uploaded_image.link
 
 if __name__ == '__main__':
-    print str(sys.argv)
     print json.dumps(get_comments_from_url(target=sys.argv[1]))
 
