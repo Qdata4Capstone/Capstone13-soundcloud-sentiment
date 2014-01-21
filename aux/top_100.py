@@ -2,7 +2,7 @@ import json
 from cluster import KMeansClustering
 
 def cluster_trajectories():
-    json_data = open('static/datasets/../heatmap-gen/static/datasets/dj-mag-top-100.json')
+    json_data = open('static/datasets/dj-mag-top-100.json')
     data = json.load(json_data)
     uniques_djs = set()
 
@@ -65,7 +65,7 @@ def get_streak(years):
     return best
 
 def generate_stats():
-    json_data = open('static/datasets/../heatmap-gen/static/datasets/dj-mag-top-100.json')
+    json_data = open('static/datasets/dj-mag-top-100.json')
     data = json.load(json_data)
 
     uniques_djs = set()
@@ -95,5 +95,16 @@ def generate_stats():
     #Close file stream
     json_data.close()
 
+def get_average_rank(dj, data):
+    rank = []
+
+    for year in range(1997, 2014):
+        if dj in data[str(year)]:
+            rank.append(data[str(year)].index(dj) + 1)
+
+    print sum(rank) / float(len(rank))
+
 if __name__ == '__main__':
-    generate_stats()
+    json_data = open('static/datasets/dj-mag-top-100.json')
+    data = json.load(json_data)
+    get_average_rank("Mat Zo", data)
