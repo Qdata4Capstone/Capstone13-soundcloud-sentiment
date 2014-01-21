@@ -1,0 +1,7 @@
+Weekly Progress.txt
+.idea
+.DS_store
+*.pyc
+settings.cfg
+heatmap-gen/static/img/
+aws.pem
