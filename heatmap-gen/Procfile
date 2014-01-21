@@ -1,1 +1,0 @@
-web: gunicorn heatmap_gen:app
