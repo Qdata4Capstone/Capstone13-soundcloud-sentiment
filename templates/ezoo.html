@@ -98,7 +98,8 @@ d3.json("../static/datasets/electric-zoo-2013.json", function(error, classes) {
       .style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
       .text(function(d) { return d.key; })
       .on("mouseover", mouseovered)
-      .on("mouseout", mouseouted);
+      .on("mouseout", mouseouted)
+      .style("font-size", "20px");
 });
 
 function mouseovered(d) {
