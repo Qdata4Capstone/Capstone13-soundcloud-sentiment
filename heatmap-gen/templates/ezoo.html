@@ -1,5 +1,14 @@
 <!DOCTYPE html>
+<html>
 <meta charset="utf-8">
+
+<head>
+    <title>Electric Zoo DJ Plot</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:800italic,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="../static/css/ezoo.css">
+    <!--<link rel="shortcut icon" href="../static/img/favicon.ico" type="image/x-icon">-->
+    <!--<link rel="icon" href="../static/img/favicon.ico" type="image/x-icon">-->
+</head>
 <style>
 
 .node {
@@ -48,129 +57,144 @@
 
 </style>
 <body>
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script>
+    <div class="wrapper">
+        <h1>Electric Zoo 2013 DJ Graph</h1>
 
-var diameter = 800,
-    radius = diameter / 2,
-    innerRadius = radius - 120;
+        <div id="main">
+        </div>
+    </div>
 
-var cluster = d3.layout.cluster()
-    .size([360, innerRadius])
-    .sort(null)
-    .value(function(d) { return d.size; });
+    <div class="push"></div>
 
-var bundle = d3.layout.bundle();
+    <div class="footer">
+        <a href="https://twitter.com/jasdev" target="_blank">@jasdev</a>
+    </div>
+    <script src="../static/js/jquery.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script>
 
-var line = d3.svg.line.radial()
-    .interpolate("bundle")
-    .tension(.5)
-    .radius(function(d) { return d.y; })
-    .angle(function(d) { return d.x / 180 * Math.PI; });
+    var diameter = 800,
+        radius = diameter / 2,
+        innerRadius = radius - 120;
 
-var svg = d3.select("body").append("svg")
-    .attr("width", diameter + 300)
-    .attr("height", diameter + 300)
-  .append("g")
-    .attr("transform", "translate(" + (radius + 100) + "," + (radius + 100) + ")");
+    var cluster = d3.layout.cluster()
+        .size([360, innerRadius])
+        .sort(null)
+        .value(function(d) { return d.size; });
 
-var link = svg.append("g").selectAll(".link"),
-    node = svg.append("g").selectAll(".node");
+    var bundle = d3.layout.bundle();
 
-d3.json("../static/datasets/electric-zoo-2013.json", function(error, classes) {
-  var nodes = cluster.nodes(packageHierarchy(classes)),
-      links = packageImports(nodes);
+    var line = d3.svg.line.radial()
+        .interpolate("bundle")
+        .tension(.5)
+        .radius(function(d) { return d.y; })
+        .angle(function(d) { return d.x / 180 * Math.PI; });
 
-  link = link
-      .data(bundle(links))
-    .enter().append("path")
-      .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
-      .attr("class", "link")
-      .attr("d", line);
+    var svg = d3.select("#main").append("svg")
+        .attr("width", diameter + 400)
+        .attr("height", diameter + 250)
+      .append("g")
+        .attr("transform", "translate(" + (radius + 200) + "," + (radius + 200) + ")");
 
-  node = node
-      .data(nodes.filter(function(n) { return !n.children; }))
-    .enter().append("text")
-      .attr("class", "node")
-      .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
-      .attr("dy", ".31em")
-      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")" + (d.x < 180 ? "" : "rotate(180)"); })
-      .style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
-      .text(function(d) { return d.key; })
-      .on("mouseover", mouseovered)
-      .on("mouseout", mouseouted)
-      .style("font-size", function(d) { return (d.average_rank === "N/A") ? "10px" : (30 - (1/30)*(d.average_rank)) + "px"; });
-});
+    var link = svg.append("g").selectAll(".link"),
+        node = svg.append("g").selectAll(".node");
 
-function mouseovered(d) {
-  node
-      .each(function(n) { n.target = n.source = false; });
+    d3.json("../static/datasets/electric-zoo-2013.json", function(error, classes) {
+      var nodes = cluster.nodes(packageHierarchy(classes)),
+          links = packageImports(nodes);
 
-  link
-      .classed("link--target", function(l) { if (l.target === d) return l.source.source = true; })
-      .classed("link--source", function(l) { if (l.source === d) return l.target.target = true; })
-    .filter(function(l) { return l.target === d || l.source === d; })
-      .each(function() { this.parentNode.appendChild(this); });
+      link = link
+          .data(bundle(links))
+        .enter().append("path")
+          .each(function(d) { d.source = d[0], d.target = d[d.length - 1]; })
+          .attr("class", "link")
+          .attr("d", line);
 
-  node
-      .classed("node--target", function(n) { return n.target; })
-      .classed("node--source", function(n) { return n.source; });
-}
-
-function mouseouted(d) {
-  link
-      .classed("link--target", false)
-      .classed("link--source", false);
-
-  node
-      .classed("node--target", false)
-      .classed("node--source", false);
-}
-
-d3.select(self.frameElement).style("height", diameter + "px");
-
-// Lazily construct the package hierarchy from class names.
-function packageHierarchy(classes) {
-  var map = {};
-
-  function find(name, data) {
-    var node = map[name], i;
-    if (!node) {
-      node = map[name] = data || {name: name, children: []};
-      if (name.length) {
-        node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
-        node.parent.children.push(node);
-        node.key = name.substring(i + 1);
-      }
-    }
-    return node;
-  }
-
-  classes.forEach(function(d) {
-    find(d.name, d);
-  });
-
-  return map[""];
-}
-
-// Return a list of imports for the given array of nodes.
-function packageImports(nodes) {
-  var map = {},
-      imports = [];
-
-  // Compute a map from name to node.
-  nodes.forEach(function(d) {
-    map[d.name] = d;
-  });
-
-  // For each import, construct a link from the source to target node.
-  nodes.forEach(function(d) {
-    if (d.imports) d.imports.forEach(function(i) {
-      imports.push({source: map[d.name], target: map[i]});
+      node = node
+          .data(nodes.filter(function(n) { return !n.children; }))
+        .enter().append("text")
+          .attr("class", "node")
+          .attr("dx", function(d) { return d.x < 180 ? 8 : -8; })
+          .attr("dy", ".31em")
+          .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")" + (d.x < 180 ? "" : "rotate(180)"); })
+          .style("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+          .text(function(d) { return d.key; })
+          .on("mouseover", mouseovered)
+          .on("mouseout", mouseouted)
+          .style("font-size", function(d) { return (d.average_rank === "N/A") ? "7px" : (40 - (4/10)*(d.average_rank)) + "px"; });
     });
-  });
 
-  return imports;
-}
+    function mouseovered(d) {
+      node
+          .each(function(n) { n.target = n.source = false; });
 
-</script>
+      link
+          .classed("link--target", function(l) { if (l.target === d) return l.source.source = true; })
+          .classed("link--source", function(l) { if (l.source === d) return l.target.target = true; })
+        .filter(function(l) { return l.target === d || l.source === d; })
+          .each(function() { this.parentNode.appendChild(this); });
+
+      node
+          .classed("node--target", function(n) { return n.target; })
+          .classed("node--source", function(n) { return n.source; });
+    }
+
+    function mouseouted(d) {
+      link
+          .classed("link--target", false)
+          .classed("link--source", false);
+
+      node
+          .classed("node--target", false)
+          .classed("node--source", false);
+    }
+
+    d3.select(self.frameElement).style("height", diameter + "px");
+
+    // Lazily construct the package hierarchy from class names.
+    function packageHierarchy(classes) {
+      var map = {};
+
+      function find(name, data) {
+        var node = map[name], i;
+        if (!node) {
+          node = map[name] = data || {name: name, children: []};
+          if (name.length) {
+            node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
+            node.parent.children.push(node);
+            node.key = name.substring(i + 1);
+          }
+        }
+        return node;
+      }
+
+      classes.forEach(function(d) {
+        find(d.name, d);
+      });
+
+      return map[""];
+    }
+
+    // Return a list of imports for the given array of nodes.
+    function packageImports(nodes) {
+      var map = {},
+          imports = [];
+
+      // Compute a map from name to node.
+      nodes.forEach(function(d) {
+        map[d.name] = d;
+      });
+
+      // For each import, construct a link from the source to target node.
+      nodes.forEach(function(d) {
+        if (d.imports) d.imports.forEach(function(i) {
+          imports.push({source: map[d.name], target: map[i]});
+        });
+      });
+
+      return imports;
+    }
+
+    </script>
+</body>
+</html>

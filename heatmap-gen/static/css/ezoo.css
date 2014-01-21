@@ -1,0 +1,48 @@
+svg{
+    display: block;
+    margin: auto;
+}
+
+body{
+    padding-top: 10px;
+}
+
+html {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.2;
+  color: #333;
+}
+
+h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 5em;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+#main {
+    text-align: center;
+}
+
+p {
+  margin: 0 0 10px 0;
+}
+
+/* Sticky footer block */
+* {
+    margin: 0;
+}
+html, body {
+    height: 93%;
+}
+.wrapper {
+    min-height: 93%;
+    height: auto !important;
+    height: 93%;
+    margin: 0 auto -1em;
+}
+.footer, .push {
+    height: 1em;
+    text-align: center;
+}
