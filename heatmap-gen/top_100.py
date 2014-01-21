@@ -1,5 +1,7 @@
 import json
 from cluster import KMeansClustering
+import os
+
 
 def cluster_trajectories():
     json_data = open('static/datasets/dj-mag-top-100.json')
@@ -64,36 +66,49 @@ def get_streak(years):
 
     return best
 
-def generate_stats():
-    json_data = open('static/datasets/dj-mag-top-100.json')
-    data = json.load(json_data)
+# def generate_stats():
+#     json_data = open('static/datasets/dj-mag-top-100.json')
+#     data = json.load(json_data)
+#
+#     uniques_djs = set()
+#
+#     for year in range(1997, 2014):
+#         for name in data[str(year)]:
+#             uniques_djs.add(name)
+#
+#     out = {}
+#
+#     for dj in uniques_djs:
+#         dj_meta = {}
+#         years, ranks = get_trajectory(dj, data)
+#         points = []
+#         for i in range(0, len(years)):
+#             points.append([years[i], ranks[i]])
+#         dj_meta["data"] = points
+#         dj_meta["highest"] = min(ranks)
+#         dj_meta["first"] = ranks[0]
+#         dj_meta["spread"] = max(ranks) - min(ranks)
+#         dj_meta["num_consecutive"] = get_streak(years)
+#
+#         out[dj] = dj_meta
+#
+#     print json.dumps(out)
+#
+#     #Close file stream
+#     json_data.close()
 
-    uniques_djs = set()
+def get_average_rank(dj, data):
+    rank = []
 
     for year in range(1997, 2014):
-        for name in data[str(year)]:
-            uniques_djs.add(name)
+        if dj in data[str(year)]:
+            rank.append(data[str(year)].index(dj) + 1)
 
-    out = {}
+    print rank
 
-    for dj in uniques_djs:
-        dj_meta = {}
-        years, ranks = get_trajectory(dj, data)
-        points = []
-        for i in range(0, len(years)):
-            points.append([years[i], ranks[i]])
-        dj_meta["data"] = points
-        dj_meta["highest"] = min(ranks)
-        dj_meta["first"] = ranks[0]
-        dj_meta["spread"] = max(ranks) - min(ranks)
-        dj_meta["num_consecutive"] = get_streak(years)
-
-        out[dj] = dj_meta
-
-    print json.dumps(out)
-
-    #Close file stream
-    json_data.close()
 
 if __name__ == '__main__':
-    generate_stats()
+    print os.getcwd()
+    # json_data = open('./static/datasets/dj-mag-top-100.json')
+    # data = json.load(json_data)
+    # get_average_rank("Mat Zo", data)
