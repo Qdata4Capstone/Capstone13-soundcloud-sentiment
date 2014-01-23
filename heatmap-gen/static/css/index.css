@@ -1,0 +1,68 @@
+body{
+    padding-top: 10px;
+}
+
+html {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.2;
+  color: #333;
+}
+
+h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 4em;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+h3 {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2em;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+#main {
+    text-align: center;
+}
+
+p {
+  margin: 0 0 10px 0;
+}
+
+.primary-link {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1.5em;
+    text-align: center;
+    padding-bottom: 20px;
+    display: block;
+    color: #0097cf;
+    text-decoration: none;
+}
+
+.icon{
+    text-align: center;
+}
+
+.icon a {
+    padding: 0 20px;
+}
+
+/* Sticky footer block */
+* {
+    margin: 0;
+}
+html, body {
+    height: 93%;
+}
+.wrapper {
+    min-height: 93%;
+    height: auto !important;
+    height: 93%;
+    margin: 0 auto -1em;
+}
+.footer, .push {
+    height: 1em;
+    text-align: center;
+}

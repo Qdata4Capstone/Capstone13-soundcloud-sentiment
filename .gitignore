@@ -3,6 +3,5 @@ Weekly Progress.txt
 .DS_store
 *.pyc
 settings.cfg
-heatmap-gen/static/img/
 aws.pem
 static/img/
