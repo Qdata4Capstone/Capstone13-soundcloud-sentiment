@@ -5,7 +5,7 @@ heatmap_gen = Flask(__name__)
 
 @heatmap_gen.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index_thesis.html')
 
 @heatmap_gen.route('/top100')
 def top_100():

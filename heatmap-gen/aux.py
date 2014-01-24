@@ -1,5 +1,6 @@
 import heatmap_gen
 import json
+import operator
 
 def check_dups(file_contents):
     tracks = set()
@@ -52,12 +53,17 @@ def parseFields(comment):
     out = {'id': comment.id, 'timestamp': comment.timestamp, 'body': comment.body, 'track_id': comment.track_id}
     return out
 
+def max_incoming(data):
+    seen_djs = {}
+    for dj in data:
+        for played in dj['imports']:
+            if not played in seen_djs:
+                seen_djs[played] = 1
+            else:
+                seen_djs[played] += 1
+
+    return max(seen_djs.iteritems(), key=operator.itemgetter(1))[0]
+
+
 if __name__ == '__main__':
-    #target = open('URLs.txt', 'r')
-    #lines = target.read().splitlines()
-    #target.close()
-    #
-    #if not check_dups(lines):
-    #     print 'All good'
-    #     scrape_comments_flat(lines)
     pass
