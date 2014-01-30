@@ -4,4 +4,4 @@ Weekly Progress.txt
 *.pyc
 settings.cfg
 aws.pem
-static/img/
+heatmap-gen/static/img/
