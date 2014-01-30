@@ -9,7 +9,6 @@ import Image
 import ImageDraw
 import unirest
 import pyimgur
-import datetime
 from nltk.corpus import stopwords
 
 client = soundcloud.Client(client_id='6504a6ad70b88dd5684e256947c782c0')
