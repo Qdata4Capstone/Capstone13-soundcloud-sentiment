@@ -9,15 +9,16 @@ import Image
 import ImageDraw
 import unirest
 import pyimgur
+import datetime
 from nltk.corpus import stopwords
 
 client = soundcloud.Client(client_id='6504a6ad70b88dd5684e256947c782c0')
 os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 
-#Pull out all of the words in a list of tagged tweets, formatted in tuples.
-def getwords(tweets):
+#Pull out all of the words, formatted in tuples.
+def getwords(comments):
     allwords = []
-    for (words, sentiment) in tweets:
+    for (words, sentiment) in comments:
         allwords.extend(words)
     return allwords
 
@@ -60,13 +61,13 @@ sptagged = zip(semi_positive, splist)
 neuttagged = zip(neutral, neutlist)
 negtagged = zip(negative, neglist)
 
-taggedtweets = negtagged + neuttagged + sptagged + rptagged
+taggedcomments = negtagged + neuttagged + sptagged + rptagged
 
-tweets = []
+comments = []
 
-for (word, sentiment) in taggedtweets:
+for (word, sentiment) in taggedcomments:
     word_filter = [i.lower() for i in word.split()]
-    tweets.append((word_filter, sentiment))
+    comments.append((word_filter, sentiment))
 
 customstopwords = ['download', 'link', 'music', 'synth', 'i\'m', 'u', 'balls', 'dl',
                    'people', 'chords', 'you\'re', 'new', 'im', 'guys', 'i\'ve', 'vocals',
@@ -77,10 +78,10 @@ customstopwords = ['download', 'link', 'music', 'synth', 'i\'m', 'u', 'balls', '
                    'milk', 'work.', 'go', 'dick', 'ass', 'n', 'please']
 
 #Remove stopwords, which don't add to the sentiment of the comment, standard library of these and custom
-wordlist = wordlist = [i for i in getwords(tweets) if not i in stopwords.words('english')]
+wordlist = wordlist = [i for i in getwords(comments) if not i in stopwords.words('english')]
 wordlist = [i for i in wordlist if not i in customstopwords]
 
-training_set = nltk.classify.apply_features(feature_extractor, tweets)
+training_set = nltk.classify.apply_features(feature_extractor, comments)
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 
 # print classifier.show_most_informative_features(n=50)
@@ -127,11 +128,20 @@ def get_comments_from_url(target):
                             params={"height": 500, "textblock": corpus_post, "width": 500, "config": ""})
 
     scores = score_comments(comments, duration)
-    interval = find_window(scores, duration, 8000)
+    interval_tuple = find_window(scores, duration, 8000)
+    interval = interval_tuple[0]
+    window = interval_tuple[1]
     upload = draw_lines(waveform, scores, interval)
 
-    result = {'id': id, 'word_cloud_url': response.body['url'], 'waveform': upload}
+    result = {'id': id, 'word_cloud_url': response.body['url'], 'waveform': upload, 'window_left': get_readable_time(window[0]), 'window_right': get_readable_time(window[1])}
     return result
+
+def get_readable_time(milliseconds):
+    seconds = milliseconds / 1000
+    minutes = seconds / 60
+    seconds %= 60
+
+    return str(minutes) + ":" + str(seconds)
 
 def score_comments(comments, time):
     scores = []
@@ -148,6 +158,7 @@ def score_comments(comments, time):
 def find_window(scores, duration, window_size):
     left = 0
     best_sum = 0
+    best_time_window = (0, window_size)
     best_window = (0, float(window_size) / duration)
 
     for right in range(window_size, duration, 1000):
@@ -163,8 +174,9 @@ def find_window(scores, duration, window_size):
         if window_sum > best_sum:
             best_sum = window_sum
             best_window = (float(left) / duration, float(right) / duration)
+            best_time_window = (left, right)
         left += 1000
-    return best_window
+    return best_window, best_time_window
 
 def draw_lines(url, scores, interval):
     location = "./static/img/" + url.split('/')[-1]
