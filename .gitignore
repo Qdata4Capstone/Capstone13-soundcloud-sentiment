@@ -23,8 +23,13 @@ heatmap-gen/static/img/
 *.ind
 *.lof
 *.lot
+*.log
 *.maf
 *.mtc
 *.mtc1
 *.out
 *.synctex.gz
+*.synctex
+*.toc
+*.pdf
+TSWLatexianTemp_000001.tex
