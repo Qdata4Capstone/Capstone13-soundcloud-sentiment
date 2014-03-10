@@ -32,4 +32,4 @@ heatmap-gen/static/img/
 *.synctex
 *.toc
 *.pdf
-TSWLatexianTemp_000001.tex
+TSWLatexianTemp*
