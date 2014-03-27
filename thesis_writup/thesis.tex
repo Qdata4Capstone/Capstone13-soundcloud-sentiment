@@ -177,18 +177,54 @@ To begin training an accurate classifier for test sentiment, we need a lot of tr
 
 \section{Training Process}
 
-Prior to manually labeling the comments collected, a few steps were taken to clean the data. First, an unfortunate part of the SoundCloud service is the presence of spammers who tend to comment with links to his/her music, to gain views. Such data would interfere with our core sentiment analysis, so all comments with URLs were stripped from parsing. Additionally, non-English comments were removed to specifically focus on deriving sentiment in the English context. \\
+Prior to manually labeling the comments collected, a few steps were taken to clean the data. First, an unfortunate part of the SoundCloud service is the presence of spammers who tend to comment with links to his/her music, to gain views. Such data would interfere with our core sentiment analysis, so all comments with URLs were stripped from parsing. Additionally, non-English comments were removed to specifically focus on deriving sentiment in the English context. Lastly, all text was converted to lowercase and stop words (words that don't add sentiment value such as 'the', 'is', etc.) were removed. A special note about the stop words is that both a standard list of English stop words and a custom stop word list were used. The need for an additional custom stop word list is because in EDM there are common words, used in context, that don't add sentiment value. Examples of this are the words 'remix', 'listening', and 'tune.' \\
 
 After this cleansing process, the comments were then manually labeled by splitting them across four text files, representing negative, neutral, semi-positive, and really-positive comments. The logic behind this range scale as opposed to a binary scale is that sentiment often falls along a gradient as opposed to being clearly positive or negative. Splitting the comments up in separate text files allowed us to lead them into memory later, labeled by their respective filename.
 
 \section{Tools Used}
 
-To perform our sentiment analysis, we used a Naive Bayes Classifier from Python's Natural Language Toolkit\textsuperscript{10}. 
+To perform our sentiment analysis, we used a Naive Bayes Classifier from Python's Natural Language Toolkit\textsuperscript{10}. This classifier takes in our labeled comments from above and creates a frequency table of common tokens and their appearance in specific labels. For example, the token 'great', appeared in many really positive comments, so when a new comment is introduced to the classifier, the presence of the word 'great' will likely bump the comments label towards being really positive.
 
 \section{Best Window Algorithm}
-\section{Visualizations}
+
+With our trained classifier at hand, we can begin our analysis of SoundCloud songs. Below is a diagram of how comments typically show up during playback:  
+
+\begin{figure}[h]
+\includegraphics[scale=.45]{example_comments}
+\centering
+\end{figure}
+
+Using these comments, we seek to answer the question of what window of this song is the 'best' in terms of user sentiment, as derived from the text comments. We can accomplish this in the following steps:
+
+\begin{enumerate}
+  \item Given a SoundCloud URL, use the REST API to fetch all timestmped comments associated with the track
+  \item If we seek to find the best 10 seconds, we create a sliding 10 second window across the duration of the track
+	\begin{enumerate}
+		\item For each 10 second window, we score each comment in the window according to its classified label outputted from the Bayes Classifier. Attributing a score to each label (e.g. negative is -1, neutral is 0, semi-positive is +1, and really positive is +2). Summing these weights we get a score for the entire window.  
+	\end{enumerate}
+  \item Keep track of the window with the highest score from above loop and output as 'best' portion of track.
+\end{enumerate}
+
+\section{Visualizations and Extensions}
+
+Running the algorithm, we can create a heat map of how comment sentiment is distributed along a given track. 
+
+\begin{figure}[h]
+\includegraphics[scale=.45]{best_window}
+\centering
+\end{figure}
+
+Above, the lines represent user comments and the closer the comment is to the color green, the more positive it is in sentiment. Additionally, the window in red represents the best 8 second window of the song via the algorithm above. To extend this notion of extracting the best parts of songs, we took 10 of the top 100 songs on Beatport's Top 100\textsuperscript{11} and ran this algorithm on them. From these 10 best portions, we created a single track composed of those best parts\textsuperscript{12}. Lastly, from the text data, we can also visualize the comments in for form of a word cloud, where the fonts scaled by frequency.
+
+\begin{figure}[h]
+\includegraphics[scale=.45]{word_cloud}
+\centering
+\end{figure}
 
 \chapter{Conclusion and Future Work}
+
+
+
 \chapter{References}
 
 \textsuperscript{1} \url{http://research.google.com/bigpicture/music/} \\
@@ -200,7 +236,9 @@ To perform our sentiment analysis, we used a Naive Bayes Classifier from Python'
 \textsuperscript{7} \url{http://www.madeevent.com/ElectricZoo/} \\
 \textsuperscript{8} \url{http://www.jasdev.me/thesis/ezoo} \\
 \textsuperscript{9} \url{http://developers.soundcloud.com/} \\
-\textsuperscript{10} \url{http://www.nltk.org/}
+\textsuperscript{10} \url{http://www.nltk.org/} \\
+\textsuperscript{11} \url{http://www.beatport.com/top-100}
+\textsuperscript{12} \url{https://soundcloud.com/jasdev-singh/beatport-top-10-drops}
 
 \bibliographystyle{plain}
 \bibliography{simple}
