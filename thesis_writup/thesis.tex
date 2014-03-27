@@ -59,19 +59,30 @@ Being a relatively young genre, there has not been a lot of research done on the
 
 \chapter{Previous Work}
 
-\section{EDM}
+\section{Research in EDM}
 
-Previous work in the realm of analyzing data on EDM is far and in between. However, Eventbrite, an online ticketing platform for live events, put out a study in June 2013 showcasing behavioral trends on how EDM listeners shared content on social media before and after events\textsuperscript{3}. This serves as a perfect contrast to our study of how DJs play music at live events, giving us a wholistic
+Previous work in the realm of analyzing data on EDM is far and in between. However, Eventbrite, an online ticketing platform for live events, put out a study in June 2013 showcasing behavioral trends on how EDM listeners shared content on social media before and after events\textsuperscript{3}. This serves as a perfect contrast to our study of how DJs play music at live events, giving us a holistic view.
 
-[Add sentiment analysis previous work]
+\section{Research in Sentiment Analysis}
+Sentiment analysis is a branch of Natural Language Processing that we will rely heavily upon in our attempt to gain insights from text data present on the music streaming service, SoundCloud\textsuperscript{4}. More specifically, sentiment analysis attempts to determine the attitude and polarity of a document in both supervised and unsupervised contexts. In this paper, we will employ a supervised machine learning technique with a training corpus of thousands of SoundCloud comments to detect positive and negative emotions. As a field of study, Sentiment Analysis has gained popularity with the rise of social media, as the amount of reviews, ratings, and recommendations have proliferated.
 
-[Add network diagram and ranking work]
+\chapter{Overview}
+
+\section{Data Sources}
+
+\begin{figure}[h]
+\includegraphics[scale=.50]{sources}
+\centering
+\end{figure}
+
+Using data available within the community, we seek to convert it into knowledge using a variety of analysis techniques. To begin, we are going to use poll data from the DJ Magazine Top 100. Starting in 1997, DJ Magazine has put together a popular vote poll to determine the top 100 DJs each year. However, when it comes to subjective topics, like music, this type of poll has received criticism since popularity does not always coincide with musical talent. But, on a higher level, we can use this time series data to draw larger and more general conclusions about the genre and its constituents. In our study, we scraped the poll data and made then available in both CSV\textsuperscript{5} and JSON\textsuperscript{6} format. \\
+
+Second, we will be looking for connections between DJs set lists that are available on the popular site, 1001 Tracklists. As mentioned before, it is common for DJs to play longer sets during live events. This site serves as an aggregator for the tracks played in such sets to better allow for song discovery. To utilize this, we will scrape the tracklist data for a specific event, Electric Zoo NYC\textsuperscript{7}, and try to establish connections between artists by which other artists' music they play in each others sets. This can allow for the creation of a community diagram, where we can logically see higher level connections between groups of DJs. \\
+
+Lastly, 
+
 
 \chapter{Framework}
-
-\section{DJ Magazine Top 100}
-
-Starting in 1997, DJ Magazine has put together a popular vote poll to determine the top 100 DJs each year. However, when it comes to subjective topics, like music, this type of poll has received criticism since popularity does not always coincide with musical talent. But, on a higher level, we can use this time series data to draw larger and more general conclusions about the genre and its constituents. In our study, we scraped the poll data and made then available in both CSV [link] and JSON [link] format. 
 
 \section{Top 100 Case Study \#1, Swedish House Mafia}
 
@@ -146,6 +157,10 @@ As noted in the diagram, Avicii's average rank in the charts is 12.75, whereas D
 \textsuperscript{1} \url{http://research.google.com/bigpicture/music/} \\
 \textsuperscript{2} \url{https://play.google.com/store/music} \\
 \textsuperscript{3} \url{http://www.eventbrite.com/pressreleases/edm-fan-behavior-differs-greatly-from-that-of-other-music-fans/}
+\textsuperscript{4} \url{https://soundcloud.com/}
+\textsuperscript{5} \url{https://github.com/Jasdev/soundcloud-sentiment/blob/master/heatmap-gen/static/datasets/dj-mag-top-100.csv}
+\textsuperscript{6} \url{https://github.com/Jasdev/soundcloud-sentiment/blob/master/heatmap-gen/static/datasets/dj-mag-top-100.json}
+\textsuperscript{7} \url{http://www.madeevent.com/ElectricZoo/}
 
 \bibliographystyle{plain}
 \bibliography{simple}
