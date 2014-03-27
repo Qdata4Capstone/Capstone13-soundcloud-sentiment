@@ -77,16 +77,21 @@ Sentiment analysis is a branch of Natural Language Processing that we will rely 
 
 Using data available within the community, we seek to convert it into knowledge using a variety of analysis techniques. To begin, we are going to use poll data from the DJ Magazine Top 100. Starting in 1997, DJ Magazine has put together a popular vote poll to determine the top 100 DJs each year. However, when it comes to subjective topics, like music, this type of poll has received criticism since popularity does not always coincide with musical talent. But, on a higher level, we can use this time series data to draw larger and more general conclusions about the genre and its constituents. In our study, we scraped the poll data and made then available in both CSV\textsuperscript{5} and JSON\textsuperscript{6} format. \\
 
-Second, we will be looking for connections between DJs set lists that are available on the popular site, 1001 Tracklists. As mentioned before, it is common for DJs to play longer sets during live events. This site serves as an aggregator for the tracks played in such sets to better allow for song discovery. To utilize this, we will scrape the tracklist data for a specific event, Electric Zoo NYC\textsuperscript{7}, and try to establish connections between artists by which other artists' music they play in each others sets. This can allow for the creation of a community diagram, where we can logically see higher level connections between groups of DJs. \\
+Second, we will be looking for connections between DJs set lists that are available on the popular site, 1001 Tracklists. As mentioned before, it is common for DJs to play longer sets during live events. This site serves as an aggregator for the tracks played in such sets to better allow for song discovery. To utilize this, we will scrape the tracklist data for a specific event, Electric Zoo NYC\textsuperscript{7}, and try to establish connections between artists by which other artists' music they play in each others sets. This can allow for the creation of a community diagram, where we can logically see higher level connections between groups of DJs. In parsing this data, JSON was used in a manner reminiscent of an adjacency list, typically used in graphical settings. See below for a sample entry:\\
 
-Lastly, 
+\begin{figure}[h]
+\includegraphics[scale=.65]{ezoo_json}
+\centering
+\end{figure}
+
+Lastly, we will mine text data from the music streaming service SoundCloud. The motivation for this inquiry is the fact that comments on the service are timestamped at specific points during songs. So, using sentiment analysis, we can seek to get a better understanding about the underlying audio of a track, given what people are saying in text. Our initial data mining fetched over 200,000 of these comments and thousands of them were labeled manually as being either negative, neutral, semi-positive, or really positive in emotion. These labeled points were then used to train a classifier to distinguish sentiment on new unlabeled comments.
 
 
-\chapter{Framework}
+\chapter{DJ Magazine Top 100}
 
 \section{Top 100 Case Study \#1, Swedish House Mafia}
 
-To exemplify some of the trends in these charts, we begin with the DJ trio that is Swedish House Mafia. Starting in 2008, Steve Angello, Sebastian Ingrosso, and Axwell began touring around the world together and recently stopped in 2013. Below is a plot of their respective rankings in the chart, including the ranking of the group overall: \newpage
+To exemplify some of the trends in these charts, we begin with the DJ trio that is Swedish House Mafia. Starting in 2008, Steve Angello, Sebastian Ingrosso, and Axwell began touring around the world together and recently stopped in 2013. Below is a plot of their respective rankings in the chart, including the ranking of the group overall: 
 
 \begin{figure}[h]
 \includegraphics[scale=.65]{shm_graph}
@@ -117,7 +122,7 @@ Alesso, a 22 year-old DJ from Sweden, got an early start in 2010. Later on in hi
 
 \section{Top 100 Case Study \#4, Record Labels}
 
-Like other genres, it is common in EDM for artists to come together in groups to form record labels. Applying this grouping to our Top 100 data, we can see the performance of various labels in the poll. \newpage
+Like other genres, it is common in EDM for artists to come together in groups to form record labels. Applying this grouping to our Top 100 data, we can see the performance of various labels in the poll. 
 
 \begin{figure}[h]
 \includegraphics[scale=.45]{label_graph}
@@ -126,14 +131,14 @@ Like other genres, it is common in EDM for artists to come together in groups to
 
 These graphs can help us see how the label is performing overall in the charts and help identify integral artists. 
 
-\section{Festivals and Live Events}
+\chapter{Festivals and Live Events}
 
-Large scale EDM events have become increasingly common, with upwards of 300 thousand attendees in some cases. During such events, DJs will often play sets composed of not only their work but work from other artists as well. This scenario lends itself well to a sort of network analysis. To get set list data, there is a crowd-sourced site, 1001Tracklists [link] that hosts set lists from a wide array of events and podcasts. Moreover, users can go in and attach audio samples to tacks, link unknown songs to other appearances in different contexts, and even resolve disputes of song IDs via voting. To use this data, we scraped the site and crossed the set list data with Top 100 rankings to get a bigger picture of community dynamics within festivals. To showcase this, we decided to use data from an annual festival run in New York, Electric Zoo [link]. Below is a graph of artists present in the festival, with the font of their names scaled by their respective Top 100 ranking. Moreover, a label colored black is the current source DJ, with green edges representing origin DJ played a song by the source DJ and the red edges representing that the source DJ played a song by the destination DJ. An interactive version of this diagram is available here [link]. 
+Large scale EDM events have become increasingly common, with upwards of 300 thousand attendees in some cases. During such events, DJs will often play sets composed of not only their work but work from other artists as well. This scenario lends itself well to a sort of network analysis. To get set list data, there is a crowd-sourced site, 1001Tracklists that hosts set lists from a wide array of events and podcasts. Moreover, users can go in and attach audio samples to tacks, link unknown songs to other appearances in different contexts, and even resolve disputes of unknown song via voting. To use this data, we scraped the site and crossed the set list data with Top 100 rankings to get a bigger picture of community dynamics within festivals. To showcase this, we decided to use data from an annual festival run in New York, Electric Zoo. Below is a graph of artists present in the festival, with the font of their names scaled by their respective Top 100 ranking. Moreover, a black colored label is the current source DJ, with green edges representing origin DJ played a song by the source DJ and the red edges represent that the source DJ played a song by the destination DJ. An interactive version of this diagram is available online\textsuperscript{8}. 
 
 \begin{figure}[h]
 \includegraphics[scale=.7]{network_diagram}
 \centering
-\end{figure}
+\end{figure} \newpage
 
 \section{Electric Zoo Highlights, Opportunities for Breakout DJs}
 
@@ -144,11 +149,11 @@ A great opportunity for breakout artists at these events is the scenario where a
 \centering
 \end{figure}
 
-As noted in the diagram, Avicii's average rank in the charts is 12.75, whereas Dog Blood has never actually appeared on the poll. This edge marked a huge opportunity for the duo to gain an audience and following.
+As noted in the diagram, Avicii's average rank in the charts is 12.75, whereas Dog Blood has never actually appeared on the poll. This edge marks a huge opportunity for the duo to gain an audience and following.
 
 \section{Electric Zoo Highlights, Sets with Isolated Tracks}
 
-
+Moreover, 
 
 \chapter{Conclusion}
 \chapter{Future Work}
@@ -161,6 +166,7 @@ As noted in the diagram, Avicii's average rank in the charts is 12.75, whereas D
 \textsuperscript{5} \url{https://github.com/Jasdev/soundcloud-sentiment/blob/master/heatmap-gen/static/datasets/dj-mag-top-100.csv}
 \textsuperscript{6} \url{https://github.com/Jasdev/soundcloud-sentiment/blob/master/heatmap-gen/static/datasets/dj-mag-top-100.json}
 \textsuperscript{7} \url{http://www.madeevent.com/ElectricZoo/}
+\textsuperscript{8} \url{http://www.jasdev.me/thesis/ezoo}
 
 \bibliographystyle{plain}
 \bibliography{simple}
