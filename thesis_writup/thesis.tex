@@ -1,6 +1,6 @@
 \documentclass[12pt]{dalcsthesis}
 \usepackage{graphicx}
-\usepackage{hyperref}
+\usepackage[hyphens]{url}
 \graphicspath{ {images/} }
 \begin{document}
 \mcs 
@@ -55,11 +55,13 @@ Next up, we will highlight some of the most popular genres within EDM. To begin,
 
 \section{Motivation for Study}
 
-Being a relatively young genre, there has not been a lot of research done on the EDM social demographic and artists. In this paper, we will take a look at three datasets from an analytical perspective. To start, we will note trends in the DJ Magazine Top 100 poll, which is an attempt to put a stack rank on DJs and producers from year to year. Secondly, we will look at set lists of what DJs played at live events, specifically one festival in New York called Electric Zoo. From these set lists, we can make connections from specific DJs to others by how they played and/or remixed each other's work. Such connections naturally lead to the formation of a network diagram. Lastly, we will use sentiment analysis to gain insights from public user comments on music hosted on the popular online streaming service, SoundCloud. From the text data housed in these timestamped comments, we will see the effectiveness in making conclusions in the underlying audio.
+Being a relatively young genre, there has not been a lot of research done on the EDM social demographic and artists. In this paper, we will take a look at three datasets from an analytical perspective. To start, we will note trends in the DJ Magazine Top 100 poll, which is an attempt to put a stack rank on DJs and producers from year to year. Insights on this chart can help us to better understand dynamics such as the rise and fall of genres and record labels. Secondly, we will look at set lists of what DJs played at live events, specifically one festival in New York called Electric Zoo. From these set lists, we can make connections from specific DJs to others by how they played and/or remixed each other's work. Such connections naturally lead to the formation of a network diagram. From such diagrams, we can perform an analysis on communities present to gain insight on the underlying social constructs. Lastly, we will perform a sentiment analysis on public user comments on music hosted on the popular online streaming service, SoundCloud. From the text data housed in these timestamped comments, we will attempt to form a heuristic for the overall positivity towards the underlying audio at that portion of the music. This is hugely beneficial for two major reasons. First, given any song, we can now attempt to answer the question of 'what is the best portion of this song?' via the text comments as a proxy for the audio. Extending this, an answer to such a question can help in summarizing larger pieces of audio or even serve as the recommended preview, prior to buying music on online storefronts.
 
 \chapter{Previous Work}
 
-Previous wok in the realm of analyzing data on EDM is far and in between. However, Eventbrite, an online ticketing platform for many live events, put out a study in June 2013 showcasing behavioral trends on how EDM listeners shared content on social media before and after events. [Add more details on the study and connection]
+\section{EDM}
+
+Previous work in the realm of analyzing data on EDM is far and in between. However, Eventbrite, an online ticketing platform for live events, put out a study in June 2013 showcasing behavioral trends on how EDM listeners shared content on social media before and after events\textsuperscript{3}. This serves as a perfect contrast to our study of how DJs play music at live events, giving us a wholistic
 
 [Add sentiment analysis previous work]
 
@@ -142,7 +144,8 @@ As noted in the diagram, Avicii's average rank in the charts is 12.75, whereas D
 \chapter{References}
 
 \textsuperscript{1} \url{http://research.google.com/bigpicture/music/} \\
-\textsuperscript{2} \url{https://play.google.com/store/music}
+\textsuperscript{2} \url{https://play.google.com/store/music} \\
+\textsuperscript{3} \url{http://www.eventbrite.com/pressreleases/edm-fan-behavior-differs-greatly-from-that-of-other-music-fans/}
 
 \bibliographystyle{plain}
 \bibliography{simple}
