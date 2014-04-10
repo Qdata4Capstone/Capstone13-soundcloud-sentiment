@@ -195,17 +195,36 @@ Lastly, we can seek to answer the question of which artist was most played at th
 
 \section{Data Mining Overview}
 
-To begin training an accurate classifier for test sentiment, we need a lot of training data. Using SoundCloud's public REST API\textsuperscript{9} we wrote a script to fetch 200,00 comments on songs in the EDM genre. These were stored locally in flat text files for labeling.
+To begin training an accurate classifier in determining sentiment, we need a lot of training data. Using SoundCloud's public REST API\textsuperscript{9} we wrote a script to fetch 200,00 comments on songs in the EDM genre. These were stored locally in flat text files for labeling.
 
 \section{Training Process}
 
-Prior to manually labeling the comments collected, a few steps were taken to clean the data. First, an unfortunate part of the SoundCloud service is the presence of spammers who tend to comment with links to his/her music, to gain views. Such data would interfere with our core sentiment analysis, so all comments with URLs were stripped from parsing. Additionally, non-English comments were removed to specifically focus on deriving sentiment in the English context. Lastly, all text was converted to lowercase and stop words (words that don't add sentiment value such as 'the', 'is', etc.) were removed. A special note about the stop words is that both a standard list of English stop words and a custom stop word list were used. The need for an additional custom stop word list is because in EDM there are common words, used in context, that don't add sentiment value. Examples of this are the words 'remix', 'listening', and 'tune.' \\
+Prior to manually labeling the comments collected, a few steps were taken to clean the data. First, an unfortunate part of the SoundCloud service is the presence of spammers who tend to comment with links to his/her music, to gain views. Such data would interfere with our core sentiment analysis, so all comments with URLs were stripped from parsing. Additionally, non-English comments were removed to specifically focus on deriving sentiment in the English context. Lastly, all text was converted to lowercase and stop words (words that don't add sentiment value such as 'the', 'is', etc.) were removed. A special note about the stop words is that both a standard list of English stop words and a custom stop word list were used. The English stop word list was taken from the default module provided in the Python Natural Language Toolkit (NLTK). The need for an additional custom stop word list is because in EDM there are common words, used in context, that don't add sentimental value. Examples of these words are 'remix', 'listening', and 'tune.' \\
 
-After this cleansing process, the comments were then manually labeled by splitting them across four text files, representing negative, neutral, semi-positive, and really-positive comments. The logic behind this range scale as opposed to a binary scale is that sentiment often falls along a gradient as opposed to being clearly positive or negative. Splitting the comments up in separate text files allowed us to lead them into memory later, labeled by their respective filename.
+After this cleansing process, the comments were then manually labeled by splitting them across four text files, representing negative, neutral, semi-positive, and really-positive comments. The logic behind this range scale as opposed to a binary scale is that sentiment often falls along a gradient as opposed to being clearly positive or negative. Splitting the comments up in separate text files allowed us to load them into memory later, labeled by their respective filename.
+
+\begin{figure}[h]
+\includegraphics[scale=.40]{training}
+\centering
+\end{figure}
 
 \section{Tools Used}
 
-To perform our sentiment analysis, we used a Naive Bayes Classifier from Python's Natural Language Toolkit\textsuperscript{10}. This classifier takes in our labeled comments from above and creates a frequency table of common tokens and their appearance in specific labels. For example, the token 'great', appeared in many really positive comments, so when a new comment is introduced to the classifier, the presence of the word 'great' will likely bump the comments label towards being really positive.
+To perform our sentiment analysis, we used a Naive Bayes Classifier from Python's Natural Language Toolkit\textsuperscript{10}. This classifier takes in our labeled comments from above and creates a frequency table of common tokens and their appearance in specific labels. For example, the token 'great', appeared in many really positive comments, so when a new comment is introduced to the classifier, the presence of the word 'great' will likely bump the comments label towards being really positive. Below is a sample of some of the informative features of the classifier:
+
+\begin{center}
+  \begin{tabular}{ c | c | c }
+    \hline
+    \textbf{Token} & \textbf{Label Ratio} & \textbf{Value} \\ \hline
+    bad & negative : semi\_positive & 15 : 1 \\ \hline
+    holy & really\_positive : semi\_positive & 15.1 : 1 \\ \hline
+    beautiful & really\_positive : semi\_positive & 11.2 : 1 \\ \hline
+    best & really\_positive : semi\_positive & 7.9 : 1 \\ \hline
+    nice & semi\_positive : really\_positive & 6.8 : 1 \\ \hline
+    stop & neutral : semi\_positive & 4.3 : 1 \\
+    \hline
+  \end{tabular}
+\end{center}
 
 \section{Best Window Algorithm}
 
@@ -245,7 +264,9 @@ Above, the lines represent user comments and the closer the comment is to the co
 
 \chapter{Conclusion and Future Work}
 
-From the three datasets analyzed above, we can better explore the trends and connections between the main actors within the EDM industry. From the DJ Magazine Top 100, the temporal nature of the popularity of genres is revealed as the rise and fall in the charts. Additionally, there are dynamics between artists as set lists from Electric Zoo demonstrate that there exist communities of DJs who play each others music. Lastly, from analyzing text data from SoundCloud, we can reach a heuristic for the 'best' portion of a song via sentiment analysis on timestamped data points. \\
+From the three datasets analyzed above, we can better explore the trends and connections between the main actors within the EDM industry. From the DJ Magazine Top 100, the temporal nature of the popularity of genres is revealed as the rise and fall in the charts. Additionally, there are dynamics between artists, as set lists from Electric Zoo demonstrate that there exist communities of DJs who play each others music. Lastly, from analyzing text data from SoundCloud, we can reach a heuristic for the 'best' portion of a song via sentiment analysis on timestamped data points. \\
+
+The last section, where we developed the 'best window' algorithm, as a heuristic to determine the portion of a track with the best overall sentiment score, is extremely valuable for both listeners and online music storefronts. Listeners can use this to better browse musical libraries by listening to trimmed previews of longer tracks via this algorithm. This has implications in content discovery, as users can now find music in a faster manner, by listening to key parts of music. On the online storefront side, companies can use sentiment data to effectively make better previews for content that are presented to customers before purchase. \\
 
 Being a relatively young genre, there are many applications and extensions to the research presented. For instance, the best window algorithm can be used in contexts such as summarization of audio. Moreover, when online storefronts present previews of tracks, they can use the best windows as a default choice for clips to show users prior to purchase. \\
 

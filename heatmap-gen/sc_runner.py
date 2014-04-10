@@ -83,7 +83,7 @@ wordlist = [i for i in wordlist if not i in customstopwords]
 training_set = nltk.classify.apply_features(feature_extractor, comments)
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 
-# print classifier.show_most_informative_features(n=50)
+print classifier.show_most_informative_features(n=50)
 
 def get_comments_from_url(target):
     track = client.get('/resolve', url=target)
