@@ -77,13 +77,13 @@ customstopwords = ['download', 'link', 'music', 'synth', 'i\'m', 'u', 'balls', '
                    'milk', 'work.', 'go', 'dick', 'ass', 'n', 'please']
 
 #Remove stopwords, which don't add to the sentiment of the comment, standard library of these and custom
-wordlist = wordlist = [i for i in getwords(comments) if not i in stopwords.words('english')]
+wordlist = [i for i in getwords(comments) if not i in stopwords.words('english')]
 wordlist = [i for i in wordlist if not i in customstopwords]
 
 training_set = nltk.classify.apply_features(feature_extractor, comments)
 classifier = nltk.NaiveBayesClassifier.train(training_set)
 
-print classifier.show_most_informative_features(n=50)
+# print classifier.show_most_informative_features(n=50)
 
 def get_comments_from_url(target):
     track = client.get('/resolve', url=target)
@@ -209,8 +209,32 @@ def draw_lines(url, scores, interval):
 
     return uploaded_image.link
 
-def run_tests():
-    pass
+
+def precision_tests(label, corpus):
+    tp, fp = 0, 0
+
+    for (comment, sent) in corpus:
+        prediction = classifier.classify(feature_extractor(comment))
+        if prediction == label and sent == label:
+            tp += 1
+        elif prediction == label and not sent == label:
+            fp += 1
+
+    return float(tp) / (tp + fp)
+
+
+def recall_tests(label, corpus):
+    tp, fn = 0, 0
+
+    for (comment, sent) in corpus:
+        prediction = classifier.classify(feature_extractor(comment))
+        if prediction == label and sent == label:
+            tp += 1
+        elif prediction != label and sent == label:
+            fn += 1
+
+    return float(tp) / (tp + fn)
+
 
 if __name__ == '__main__':
     print json.dumps(get_comments_from_url(target=sys.argv[1]))
