@@ -236,6 +236,18 @@ def recall_tests(label, corpus):
     return float(tp) / (tp + fn)
 
 
+def cv_test(num_folds, training):
+    subset_size = len(training)/num_folds
+    for i in range(num_folds):
+        testing_this_round = training[i*subset_size:][:subset_size]
+        training_this_round = training[:i*subset_size] + training[(i+1)*subset_size:]
+        # train using training_this_round
+        # evaluate against testing_this_round
+        # save accuracy
+
+    # find mean accuracy over all rounds
+
+
 if __name__ == '__main__':
     print json.dumps(get_comments_from_url(target=sys.argv[1]))
 
