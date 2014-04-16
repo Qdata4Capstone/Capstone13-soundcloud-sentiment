@@ -85,6 +85,7 @@ classifier = nltk.NaiveBayesClassifier.train(training_set)
 
 # print classifier.show_most_informative_features(n=50)
 
+
 def get_comments_from_url(target):
     track = client.get('/resolve', url=target)
 
@@ -238,14 +239,26 @@ def recall_tests(label, corpus):
 
 def cv_test(num_folds, training):
     subset_size = len(training)/num_folds
+    accuracies = []
+
     for i in range(num_folds):
         testing_this_round = training[i*subset_size:][:subset_size]
         training_this_round = training[:i*subset_size] + training[(i+1)*subset_size:]
-        # train using training_this_round
-        # evaluate against testing_this_round
-        # save accuracy
 
-    # find mean accuracy over all rounds
+        training_set = nltk.classify.apply_features(feature_extractor, training_this_round)
+        classifier = nltk.NaiveBayesClassifier.train(training_set)
+
+        correct = 0
+
+        for (comment, sent) in testing_this_round:
+            prediction = classifier.classify(feature_extractor(comment))
+
+            if prediction == sent:
+                correct += 1
+
+        accuracies.append(float(correct)/len(testing_this_round))
+
+    return sum(accuracies)/len(accuracies)
 
 
 if __name__ == '__main__':
