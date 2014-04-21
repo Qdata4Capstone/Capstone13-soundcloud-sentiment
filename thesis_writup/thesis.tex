@@ -1,6 +1,7 @@
 \documentclass[12pt]{dalcsthesis}
 \usepackage{graphicx}
 \usepackage[hyphens]{url}
+\usepackage{capt-of}
 \graphicspath{ {images/} }
 \begin{document}
 \mcs 
@@ -20,13 +21,13 @@
 \frontmatter
 
 \begin{abstract}
-Electronic dance music (EDM) is a relatively new genre with unique features such as a large number of subgenres and the  notion of playing live events in a festival format. With its rise to mainstream popularity, there are opportunities to explore the social dynamics of EDM by analyzing datasets associated with the genre. In our research, we seek to retrieve information from three such datasets, the DJ Magazine Top 100, live festival set lists, and SoundCloud comment data. Some of the techniques employed are time-series analyses, network diagrams, and sentiment analysis, to help draw conclusions about this young, but rapidly growing genre.
+Electronic dance music (EDM) is a relatively new genre with unique features such as a large number of subgenres and the  notion of playing live events in a festival format. With its rise to mainstream popularity, there are opportunities to explore the social dynamics of EDM by analyzing datasets associated with the genre. In our research, we seek to retrieve information from three such datasets, the DJ Magazine Top 100, live festival set lists, and SoundCloud comment data. The data mining techniques presented in this thesis provide great potential for helping listeners, musicians, and online storefronts, e.g. automatic recommendation and music summarization. 
 \end{abstract}
 
 \begin{acknowledgements}
 \begin{itemize}
-	\item Dr. Yanjun Qi, PhD
-	\item Matthew N. Eisler, PhD
+	\item Dr. Yanjun Qi, PhD, Department of Computer Science
+	\item Matthew N. Eisler, PhD, Lecturer, Department of Engineering and Society
 	\item UVa's Association of Computing Machinery
 \end{itemize}
 \end{acknowledgements}
@@ -42,13 +43,16 @@ Electronic dance music (often called EDM) includes multiple electronic music gen
 \begin{figure}[h]
 \includegraphics[scale=.49]{genre_graph}
 \centering
+\caption{Google Music Genre Timeline - Rise of Dance Music}
 \end{figure}
+
 
 A unique feature of dance music is the wide array of subgenres present. This allows for the rise of communities of producers and opportunities for remixing originals into other subgenres. Zooming in on the graph presented previously, we can see the diversity of the overall genre, with notable examples being trance, techno, house, ambient, and drum \& bass. \newpage
 
 \begin{figure}[h]
 \includegraphics[scale=.65]{subgenre_graph}
 \centering
+\caption{Subgenres present within Dance music}
 \end{figure}
 
 Next up, we will highlight some of the most popular genres within EDM. To begin, House is a genre typically noted by a 4 by 4 kick drum and a 120 - 130 beats per minute (BPM) range. Some common names within House are Avicii, Swedish House Mafia, and David Guetta. While bucketing artists into genres is not an exact science, one can generally place artists in certain genres based on the majority of their productions. Secondly, Electro is a style with identifiable synths and a tempo range of 125 - 135 BPM. Some notable artists in the space are Dada Life, Justice, and Boy's Noize. Third is Dubstep, defined by an oscillating wobble bass. The BPM range hovers around 140 and notable producers in the genre are Skrillex, Bassnectar, Skream, and Benga. Lastly, Trance is another large subgenre popular around the globe. Its tempo range is wide, 125 - 150 bpm, and is noted by anthems and exaggerated builds. Trance has been doing extremely well in the DJ Magazine Top 100, which we will introduce soon, and is lead by artists such as Armin van Buuren, Above \& Beyond, and Ferry Corsten.
@@ -80,36 +84,42 @@ Previous work in the realm of analyzing data on EDM is far and in between. Howev
 \section{Research in Sentiment Analysis}
 Sentiment analysis is a branch of Natural Language Processing that we will rely heavily upon in our attempt to gain insights from text data present on the music streaming service, SoundCloud\textsuperscript{4}. More specifically, sentiment analysis attempts to determine the attitude and polarity of a document in both supervised and unsupervised contexts. In this paper, we will employ a supervised machine learning technique with a training corpus of thousands of SoundCloud comments to detect positive and negative emotions. As a field of study, Sentiment Analysis has gained popularity with the rise of social media, as the amount of reviews, ratings, and recommendations have proliferated.
 
-\chapter{Overview}
-
-\section{Data Sources}
+\chapter{Overview of Data Sources}
 
 \begin{figure}[h]
 \includegraphics[scale=.50]{sources}
 \centering
+\caption{Three datasets in which we will perform data mining - DJ Magazine Top 100 (left), 1001Tracklists (middle), SoundCloud (right)}
 \end{figure}
 
-Using data available within the community, we seek to convert it into knowledge using a variety of analysis techniques. To begin, we are going to use poll data from the DJ Magazine Top 100. Starting in 1997, DJ Magazine has put together a popular vote poll to determine the top 100 DJs each year. However, when it comes to subjective topics, like music, this type of poll has received criticism since popularity does not always coincide with musical talent. But, on a higher level, we can use this time series data to draw larger and more general conclusions about the genre and its constituents. In our study, we scraped the poll data and made then available in both CSV\textsuperscript{5} and JSON\textsuperscript{6} format. Some of the challenges faced when scraping this data include: 
+\section{Dataset 1 - DJ Magazine Top 100}
+
+Using data available within the community, we seek to convert it into knowledge using a variety of analysis techniques. To begin, we are going to use poll data from the DJ Magazine Top 100. Starting in 1997, DJ Magazine has put together a popular vote poll to determine the top 100 DJs each year. However, when it comes to subjective topics, like music, this type of poll has received criticism since popularity does not always coincide with musical talent. But, on a higher level, we can use this time series data to draw larger and more general conclusions about the genre and its constituents. In our study, we scraped the poll data and made it available in both CSV\textsuperscript{5} and JSON\textsuperscript{6} format. Some of the challenges faced when scraping this data include: 
 
 \begin{itemize}
   \item Resolving accented characters in DJ names
   \item Naming consistency resolution (e.g. 'DJ Snake' versus 'Snake')
-  \item Artist stage name changes (defaulted to earliest known stage name)
+  \item Artist stage name changes (defaulted to latest known stage name)
 \end{itemize}
+
+\section{Dataset 2 - 1001Tracklists}
 
 Second, we will be looking for connections between DJs set lists that are available on the popular site, 1001 Tracklists. As mentioned before, it is common for DJs to play longer sets during live events. This site serves as an aggregator for the tracks played in such sets to better allow for song discovery. Utilizing this, we will scrape the tracklist data for a specific event, Electric Zoo NYC\textsuperscript{7}, and try to establish connections between artists by the music they play in each others' sets. This can allow for the creation of a community diagram, where we can logically see higher level connections between groups of DJs. In parsing this data, JSON was used in a manner reminiscent of an adjacency list, typically used in graphical settings. See below for a sample entry:\\
 
 \begin{figure}[h]
 \includegraphics[scale=.65]{ezoo_json}
 \centering
+\caption{Sample schema for describing social networks among DJs}
 \end{figure}
 
 In the figure above, the artists in question is Mat Zo, as indicated by the \textit{name} key. Ranking information such as the \textit{average\_rank} and \textit{size} are used to scale the nodes in the diagram. Lastly, the \textit{played} key maps to an array of other unique artist names, whose work appears in Mat Zo's set at the festival. Using this schema, we can generate a network diagram of artists at an event, to attempt to gain information about underlying group dynamics.
 
+\section{Dataset 3 - SoundCloud Comments}
+
 Lastly, we will mine text data from the music streaming service SoundCloud. The motivation for this inquiry is the fact that comments on the service are timestamped at specific points during songs. So, using sentiment analysis, we can seek to get a better understanding about the underlying audio of a track, given what people are saying in text. Our initial data mining fetched over 200,000 of these comments and thousands of them were labeled manually as being either negative, neutral, semi-positive, or really positive in emotion. These labeled points were then used to train a classifier to distinguish sentiment on new unlabeled comments.
 
 
-\chapter{DJ Magazine Top 100}
+\chapter{Social Dynamic Analysis of DJ Magazine Top 100}
 
 \section{Top 100 Case Study \#1, Swedish House Mafia}
 
@@ -118,29 +128,32 @@ To exemplify some of the trends in these charts, we begin with the DJ trio that 
 \begin{figure}[h]
 \includegraphics[scale=.65]{shm_graph}
 \centering
+\caption{Temporal Rankings of Swedish House Mafia Members}
 \end{figure}
 
 From this figure, we can see that upon the group' splitting in 2013, both Sebastian Ingrosso and Axwell had higher rankings in the poll, even above the group, whereas Steve Angello's regard in the public eye was ranked lower. The reasoning for the group's spit is unknown (although a documentary \url{http://leavetheworldbehind.com/} is set to be released soon), but this may help us gain some insight on the situation.
 
 \section{Top 100 Case Study \#2, Trance Rankings}
 
-Trance is an extremely popular electronic genre that has typically held a strong showing in the polls. However, recently in 2013, there has been some pushback from fans against the genre as DJs and producers have been experimenting with more "radio" style tracks. Below we have a plot of all the trance DJs appearing in the Top 100:
+Trance is an extremely popular electronic genre that has typically held a strong showing in the polls. However, in 2013, there has been some pushback from fans against the genre as DJs and producers have been experimenting with more "radio" style tracks. Below we have a plot of all the trance DJs appearing in the Top 100:
 
 \begin{figure}[h]
 \includegraphics[scale=.4]{trance_graph}
 \centering
+\caption{Temporal Rankings of all DJs related to the Trance genre}
 \end{figure}
 
 In 2013, every DJ in the poll, with the exception of Bobina and Andrew Rayel, actually declined in ranking, when compared to the previous years.
 
 \section{Top 100 Case Study \#3, Mentor Rankings}
 
-Alesso, a 22 year-old DJ from Sweden, got an early start in 2010. Later on in his career, he received mentoring from the aforementioned Sebastian Ingrosso. This mentor / mentee relationship has been interestingly reflected in the Top 100 charts. For example, from the graph below, you can see that Alesso's rank actually surpassed Ingrosso's, despite him being the mentee.
-
 \begin{figure}[h]
 \includegraphics[scale=.65]{alesso_seb_graph}
 \centering
+\caption{Temporal Rankings Dynamics of a pair of Mentor/Mentee DJs}
 \end{figure}
+
+Alesso, a 22 year-old DJ from Sweden, got an early start in 2010. Later on in his career, he received mentoring from the aforementioned Sebastian Ingrosso. This mentor / mentee relationship has been interestingly reflected in the Top 100 charts. From the graph below, you can see that Alesso's rank actually surpassed Ingrosso's, despite him being the mentee.
 
 \section{Top 100 Case Study \#4, Record Labels}
 
@@ -149,17 +162,19 @@ Like other genres, it is common in EDM for artists to come together in groups to
 \begin{figure}[h]
 \includegraphics[scale=.45]{label_graph}
 \centering
+\caption{Temporal Rankings Dynamics of Record Labels}
 \end{figure}
 
 These graphs can help us see how the label is performing overall in the charts and identify integral artists. 
 
-\chapter{Festivals and Live Events}
+\chapter{Social Network Analysis of Festivals and Live Events}
 
-Large scale EDM events have become increasingly common, with upwards of 300 thousand attendees in some cases. During such events, DJs will often play sets composed of not only their work but work from other artists as well. This scenario lends itself well to a sort of network analysis. To get tracklist data, there is a crowd-sourced site, 1001Tracklists that hosts set lists from a wide array of events and podcasts. Moreover, users can go in and attach audio samples to tacks, link unknown songs to other appearances in different contexts, and even resolve disputes regarding an unknown song via voting. To use this data, we scraped the site into JSON and crossed it with Top 100 rankings to get a bigger picture of community dynamics within festivals. Attempting to showcase this, we decided to use data from an annual festival run in New York, Electric Zoo. Below is a graph of artists present in the festival, with the font of their names scaled by their respective Top 100 ranking. Moreover, a black colored label is the current source DJ, with green edges representing the origin DJ playing a song by the source DJ and the red edges represent that the source DJ played a song by the destination DJ. An interactive version of this diagram is available online\textsuperscript{8}. 
+Large scale EDM events have become increasingly common, with upwards of 300 thousand attendees in some cases. During such events, DJs will often play sets composed of not only their work but work from other artists as well. This scenario lends itself well to a sort of network analysis. To get tracklist data, there is a crowd-sourced site, 1001Tracklists that hosts set lists from a wide array of events and podcasts. Moreover, users can go in and attach audio samples to tracks, link unknown songs to other appearances in different contexts, and even resolve disputes regarding an unknown song via voting. To use this data, we scraped the site into JSON and crossed it with Top 100 rankings to get a bigger picture of community dynamics within festivals. Attempting to showcase this, we decided to use data from an annual festival run in New York, Electric Zoo. Below is a graph of artists present in the festival, with the font of their names scaled by their respective Top 100 ranking. Moreover, a black colored label is the current source DJ, with green edges representing the origin DJ playing a song by the source DJ and the red edges represent that the source DJ played a song by the destination DJ. An interactive version of this diagram is available online\textsuperscript{8}. 
 
 \begin{figure}[h]
 \includegraphics[scale=.7]{network_diagram}
 \centering
+\caption{Social Network Diagram of DJs at a festival event called Electric Zoo}
 \end{figure} \newpage
 
 \section{Electric Zoo Highlights, Opportunities for Breakout DJs}
@@ -169,6 +184,7 @@ A great opportunity for breakout artists at these events is the scenario where a
 \begin{figure}[h]
 \includegraphics[scale=.5]{avicii_dog_blood}
 \centering
+\caption{Example of a breakout artist (Dog Blood) being played by an established DJ (Avicii)}
 \end{figure}
 
 As noted in the diagram, Avicii's average rank in the charts is 12.75, whereas Dog Blood has never actually appeared on the poll. This edge marks a huge opportunity for the duo to gain an audience and following.
@@ -180,6 +196,7 @@ Moreover, with this diagram, we can notice specific DJs who are disjoint in conn
 \begin{figure}[h]
 \includegraphics[scale=.5]{disjoint_sets}
 \centering
+\caption{Social Network Diagram showing artists with disjoint sets in a live event }
 \end{figure}
 
 \section{Electric Zoo Highlights, Most Played Artists}
@@ -189,6 +206,7 @@ Lastly, we can seek to answer the question of which artist was most played at th
 \begin{figure}[h]
 \includegraphics[scale=.5]{knife_party}
 \centering
+\caption{Social Network Diagram showing the most played DJ (Knife Party) at a live event }
 \end{figure}
 
 \chapter{SoundCloud Sentiment Analysis}
@@ -206,6 +224,7 @@ After this cleansing process, the comments were then manually labeled by splitti
 \begin{figure}[h]
 \includegraphics[scale=.40]{training}
 \centering
+\caption{System diagram of how SoundCloud comment data was fetched and classified. Step 1: Given a list of hundreds of SoundCloud URLs, fetch their respective comments and save locally in a flat text file. Step 2: Manually label each comment along the scale of negative, neutral, semi-positive, or really-positive according to sentiment}
 \end{figure}
 
 \section{Tools Used}
@@ -224,6 +243,7 @@ To perform our sentiment analysis, we used a Naive Bayes Classifier from Python'
     stop & neutral : semi\_positive & 4.3 : 1 \\
     \hline
   \end{tabular}
+  \captionof{table}{Top 6 informative features of the Bayes Classifier and the associated label ratio values}
 \end{center}
 
 \section{Best Window Algorithm}
@@ -233,6 +253,7 @@ With our trained classifier at hand, we can begin our analysis of SoundCloud son
 \begin{figure}[h]
 \includegraphics[scale=.45]{example_comments}
 \centering
+\caption{How text comments are rendered on SoundCloud tracks}
 \end{figure}
 
 Using these comments, we seek to answer the question of what window of this song is the 'best' in terms of user sentiment, as derived from the text comments. We can accomplish this in the following steps:
@@ -253,6 +274,7 @@ Running the algorithm, we can create a heat map of how comment sentiment is dist
 \begin{figure}[h]
 \includegraphics[scale=.45]{best_window}
 \centering
+\caption{Heat map of sentiment of SoundCloud comments. Red region indicated the portion of the track with the highest overall sentiment score}
 \end{figure}
 
 Above, the lines represent user comments and the closer the comment is to the color green, the more positive it is in sentiment. Additionally, the window in red represents the best 8 second window of the song via the algorithm above. To extend this notion of extracting the best parts of songs, we took 10 of the top 100 songs on Beatport's Top 100\textsuperscript{11} and ran this algorithm on them. From these 10 best portions, we created a single track composed of those best parts\textsuperscript{12}. Lastly, from the text data, we can also visualize the comments in for form of a word cloud, where the fonts scaled by frequency.
@@ -260,18 +282,35 @@ Above, the lines represent user comments and the closer the comment is to the co
 \begin{figure}[h]
 \includegraphics[scale=.45]{word_cloud}
 \centering
+\caption{Word cloud of tokens present in comment text data. Font is scaled by frequency of token in comment corpus.}
 \end{figure}
 
 \section{Results}
 
+We report the Precision/Recall score to evaluate our experiments.  \\
+
+\noindent
+\textbf{Precision}: Among the negative (semi-negative or semi-positive or positive) comments detected by the system, how many are true negative comments ?
+
+\noindent
+\textbf{Recall}: For all possible negatives (semi-negative or semi-positive or really-positive) , how many were detected by system?
+
+A good detector should have both high precision and high recall. If we let d be the number of negative (neutral or semi-positive or positive) detected, z be the number of negatives manually judged, and dz be the number of negative manually judged as negative among the detected ones, the precision and recall for the system are: \\
+
+\noindent
+precision = $\frac{dz}{d}$ \\
+recall = $\frac{dz}{z}$
+
+\noindent
 \textbf{Comment Corpus Breakdown}
 
+ 
 \begin{center}
   \begin{tabular}{ l | c | c | c | c | c }
     \hline
 	 & \textbf{Negative} & \textbf{Neutral} & \textbf{Semi-positive} & \textbf{Positive} \\ \hline
     \textbf{Total Count:} & 133 & 114 & 493 & 425 \\ \hline
-    \textbf{Percentage of Corpus:} & 0.057 & 0.049 & 0.212 & 0.183 \\ \hline
+    \textbf{Percentage of Corpus:} & 11.4 & 9.8 & 42.3 & 36.5 \\ \hline
     \textbf{Precision Rate:} & 1.0  & 1.0 & 0.601 & 0.932 \\ \hline
     \textbf{Recall Rate:} & 0.083 & 0.088 & 0.982 & 0.744 \\
     \hline
