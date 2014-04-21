@@ -218,23 +218,27 @@ def precision_tests(label, corpus):
         prediction = classifier.classify(feature_extractor(comment))
         if prediction == label and sent == label:
             tp += 1
-        elif prediction == label and not sent == label:
+        elif prediction == label and sent != label:
             fp += 1
+
+    print tp, fp
 
     return float(tp) / (tp + fp)
 
 
 def recall_tests(label, corpus):
-    tp, fn = 0, 0
+    tp, p = 0, 0
 
     for (comment, sent) in corpus:
         prediction = classifier.classify(feature_extractor(comment))
         if prediction == label and sent == label:
             tp += 1
-        elif prediction != label and sent == label:
-            fn += 1
+        if sent == label:
+            p += 1
 
-    return float(tp) / (tp + fn)
+    print tp, p
+
+    return float(tp) / p
 
 
 def cv_test(num_folds, training):
@@ -263,4 +267,3 @@ def cv_test(num_folds, training):
 
 if __name__ == '__main__':
     print json.dumps(get_comments_from_url(target=sys.argv[1]))
-
